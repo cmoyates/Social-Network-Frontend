@@ -12,8 +12,6 @@ function SubmitPostDialog(props) {
     const [name, setName] = useState("");
     const [content, setContent] = useState("");
 
-
-
     return (
         <div>
             <Dialog open={props.open} onClose={props.handleClose} aria-labelledby="form-dialog-title">

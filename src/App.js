@@ -8,15 +8,7 @@ import {useState, useEffect} from 'react';
 function App() {
   const [posts, setPosts] = useState([]);
   const [open, setOpen] = useState(false);
-  //const [post, setPost] = useState([]);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleCancel = () => {
-    setOpen(false);
-  };
+  
   const handleSubmit = async (post) => {
     setOpen(false);
     console.log(post)
@@ -49,11 +41,11 @@ function App() {
   return (
     <div className="App">
       <h1>Social Network</h1>
-      <Button size={"small"} onClick={handleClickOpen}>Post</Button>
+      <Button size={"small"} onClick={() => {setOpen(true);}}>Post</Button>
       <Container maxWidth="sm">
         {posts.map((item) => (<PostCard key={item.post_id} user={item.user_name} content={item.content} likeCount={item.likes}/>))}
       </Container>
-      <SubmitPostDialog open={open} handleClose={handleCancel} handleSubmit={handleSubmit}/>
+      <SubmitPostDialog open={open} handleClose={() => {setOpen(false);}} handleSubmit={handleSubmit}/>
     </div>
   );
 }
