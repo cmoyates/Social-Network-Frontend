@@ -41,7 +41,7 @@ function App() {
   return (
     <div className="App">
       <h1>Social Network</h1>
-      <Button size={"small"} onClick={() => {setOpen(true);}}>Post</Button>
+      <Button variant="contained" color="primary" size={"medium"} onClick={() => {setOpen(true);}}><b>Post</b></Button>
       <Container maxWidth="sm">
         {posts.map((item) => (<PostCard key={item.post_id} user={item.user_name} content={item.content} likeCount={item.likes}/>))}
       </Container>
