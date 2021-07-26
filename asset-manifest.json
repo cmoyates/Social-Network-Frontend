@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/Social-Network-Frontend/static/css/main.9d5b29c0.chunk.css",
-    "main.js": "/Social-Network-Frontend/static/js/main.8855d27e.chunk.js",
-    "main.js.map": "/Social-Network-Frontend/static/js/main.8855d27e.chunk.js.map",
-    "runtime-main.js": "/Social-Network-Frontend/static/js/runtime-main.0d370a1a.js",
-    "runtime-main.js.map": "/Social-Network-Frontend/static/js/runtime-main.0d370a1a.js.map",
-    "static/js/2.2475e6bc.chunk.js": "/Social-Network-Frontend/static/js/2.2475e6bc.chunk.js",
-    "static/js/2.2475e6bc.chunk.js.map": "/Social-Network-Frontend/static/js/2.2475e6bc.chunk.js.map",
-    "static/js/3.94541652.chunk.js": "/Social-Network-Frontend/static/js/3.94541652.chunk.js",
-    "static/js/3.94541652.chunk.js.map": "/Social-Network-Frontend/static/js/3.94541652.chunk.js.map",
+    "main.css": "/Social-Network-Frontend/static/css/main.a617e044.chunk.css",
+    "main.js": "/Social-Network-Frontend/static/js/main.e368feec.chunk.js",
+    "main.js.map": "/Social-Network-Frontend/static/js/main.e368feec.chunk.js.map",
+    "runtime-main.js": "/Social-Network-Frontend/static/js/runtime-main.936f7c49.js",
+    "runtime-main.js.map": "/Social-Network-Frontend/static/js/runtime-main.936f7c49.js.map",
+    "static/js/2.6eb51a56.chunk.js": "/Social-Network-Frontend/static/js/2.6eb51a56.chunk.js",
+    "static/js/2.6eb51a56.chunk.js.map": "/Social-Network-Frontend/static/js/2.6eb51a56.chunk.js.map",
+    "static/js/3.9226223b.chunk.js": "/Social-Network-Frontend/static/js/3.9226223b.chunk.js",
+    "static/js/3.9226223b.chunk.js.map": "/Social-Network-Frontend/static/js/3.9226223b.chunk.js.map",
     "index.html": "/Social-Network-Frontend/index.html",
-    "static/css/main.9d5b29c0.chunk.css.map": "/Social-Network-Frontend/static/css/main.9d5b29c0.chunk.css.map",
-    "static/js/2.2475e6bc.chunk.js.LICENSE.txt": "/Social-Network-Frontend/static/js/2.2475e6bc.chunk.js.LICENSE.txt"
+    "static/css/main.a617e044.chunk.css.map": "/Social-Network-Frontend/static/css/main.a617e044.chunk.css.map",
+    "static/js/2.6eb51a56.chunk.js.LICENSE.txt": "/Social-Network-Frontend/static/js/2.6eb51a56.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.0d370a1a.js",
-    "static/js/2.2475e6bc.chunk.js",
-    "static/css/main.9d5b29c0.chunk.css",
-    "static/js/main.8855d27e.chunk.js"
+    "static/js/runtime-main.936f7c49.js",
+    "static/js/2.6eb51a56.chunk.js",
+    "static/css/main.a617e044.chunk.css",
+    "static/js/main.e368feec.chunk.js"
   ]
 }
