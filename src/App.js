@@ -8,11 +8,11 @@ import {useState, useEffect} from 'react';
 function App() {
   const [posts, setPosts] = useState([]);
   const [open, setOpen] = useState(false);
-  
+
   const handleSubmit = async (post) => {
     setOpen(false);
     console.log(post)
-    const newPost = await fetch("http://localhost:5000/posts", {
+    const newPost = await fetch("https://fast-coast-04774.herokuapp.com/posts", {
       method: "POST",
       headers : { 
       'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ function App() {
   };
 
   const fetchPosts = async () => {
-    const res = await fetch('http://localhost:5000/posts');
+    const res = await fetch('https://fast-coast-04774.herokuapp.com/posts');
     const data = await res.json();
     document.title = "Social Network"
 
