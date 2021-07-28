@@ -33,7 +33,9 @@ function SubmitPostDialog(props) {
                 <DialogActions>
                 <Button onClick={async () => {
                     await props.handleSubmit({
-                        user_name: props.userName,
+                        user_id: props.profile.profile_id,
+                        user_name: props.profile.user_name,
+                        user_img: props.profile.img_url,
                         content: content,
                         likes: 0
                     });

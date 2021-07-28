@@ -99,17 +99,16 @@ const Posts = (props) => {
                     </Typography>
                     <IconButton className={classes.menuButton} color="inherit" aria-label="menu" onClick={() => {setMenuOpen(!menuOpen)}} ref={anchorRef} 
                         aria-controls={menuOpen ? 'menu-list-grow' : undefined} aria-haspopup="true">
-                        <Avatar src={props.profile.user_img}/>
+                        <Avatar src={props.profile.img_url}/>
                     </IconButton>
                 </Toolbar>
             </AppBar>
-            <h1>Social Network</h1>
-            <p>Logged in as {props.profile.user_name}</p>
+            <br />
             <Button variant="contained" color="primary" size={"medium"} onClick={() => {setDialogOpen(true);}}><b>Post</b></Button>
             <Container maxWidth="sm">
-                {posts.map((item) => (<PostCard key={item.post_id} user={item.user_name} content={item.content} likeCount={item.likes}/>))}
+                {posts.map((item) => (<PostCard key={item.post_id} user={item.user_name} content={item.content} likeCount={item.likes} img_url={item.user_img}/>))}
             </Container>
-            <SubmitPostDialog open={dialogOpen} handleClose={() => {setDialogOpen(false);}} handleSubmit={handleSubmit} userName={props.profile.user_name}/>
+            <SubmitPostDialog open={dialogOpen} handleClose={() => {setDialogOpen(false);}} handleSubmit={handleSubmit} profile={props.profile}/>
             <Popper open={menuOpen} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
                 {({ TransitionProps, placement }) => (
                     <Grow
