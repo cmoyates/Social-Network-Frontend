@@ -19,29 +19,29 @@ const Home = (props) => {
         }
 
         if (profileIsNew) {
-            console.log("Porordfg");
+            console.log("Creating new Profile...");
             try {
                 const newProfile = {
                     user_email: response.profileObj.email,
                     user_name: response.profileObj.name,
                     img_url: response.profileObj.imageUrl,
                 };
-                
-                profile = await fetch("https://fast-coast-04774.herokuapp.com/profiles", {
-                method: "POST",
-                headers : { 
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-                },
-                body: JSON.stringify(profile)
-                });
                 console.log(newProfile);
+                const res = await fetch("https://fast-coast-04774.herokuapp.com/profiles", {
+                    method: "POST",
+                    headers : { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(newProfile)
+                });
+                profile = await res.json();
             } catch (error) {
                 console.log(error);
                 return;
             }
         }
-        
+        console.log(profile);
         props.setProfile(profile);
         console.log("Profile");
         console.log(profile);
@@ -57,7 +57,12 @@ const Home = (props) => {
     }
     else {
         return (
-            <div>
+            <div
+            style={{
+                position: 'absolute', left: '50%', top: '50%',
+                transform: 'translate(-50%, -50%)'
+            }}
+            >
                 <h1>Welcome to the Social Network!</h1>
                 <p>
                     <GoogleLogin

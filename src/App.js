@@ -5,6 +5,7 @@ import Posts from './pages/Posts';
 import PageNotFound from './pages/PageNotFound';
 import {useState} from 'react';
 import ProtectedRoute from './components/ProtectedRoute';
+import SinglePostPage from './pages/SinglePostPage';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
           <Route exact path="/" component={()=><Home setProfile={setProfile} setIsAuth={setIsAuth} isAuth={isAuth}/>}/>
           <ProtectedRoute path="/posts" isAuth={isAuth} component={(props)=><Posts {...props} profile={profile} setProfile={setProfile} isAuth={isAuth} setIsAuth={setIsAuth}/>}/>
           <Route exact path="/404" component={PageNotFound}/>
+          <Route path="/post/:id" component={SinglePostPage}/>
           <Redirect to="/404"/>
         </Switch>
       </div>

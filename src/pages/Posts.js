@@ -8,7 +8,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-//import MenuIcon from '@material-ui/icons/Menu';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
@@ -16,8 +15,9 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from '@material-ui/core/Avatar';
 import MenuList from '@material-ui/core/MenuList';
-import { makeStyles } from '@material-ui/core/styles';
+import { createTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import {useState, useEffect, useRef} from 'react';
+import ColorPicker from '../components/ColorPicker.js';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -36,12 +36,14 @@ const useStyles = makeStyles((theme) => ({
 const Posts = (props) => {
 
     const [posts, setPosts] = useState([]);
-    const [dialogOpen, setDialogOpen] = useState(false);
+    const [primaryColor, setPrimaryColor] = useState('#3f50b5');
+    const [postDialogOpen, setPostDialogOpen] = useState(false);
+    const [colorDialogOpen, setColorDialogOpen] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const anchorRef = useRef(null);
 
-    const handleSubmit = async (post) => {
-        setDialogOpen(false);
+    const handleSubmitPost = async (post) => {
+        setPostDialogOpen(false);
         console.log(post)
         const newPost = await fetch("https://fast-coast-04774.herokuapp.com/posts", {
         method: "POST",
@@ -55,6 +57,12 @@ const Posts = (props) => {
         await fetchPosts();
     };
 
+    const handleSubmitColor = async (color) => {
+        setColorDialogOpen(false);
+        setPrimaryColor(color);
+        //console.log(color);
+    }
+
     const fetchPosts = async () => {
         const res = await fetch('https://fast-coast-04774.herokuapp.com/posts');
         const data = await res.json();
@@ -66,8 +74,11 @@ const Posts = (props) => {
     useEffect(() => {
         if (props.isAuth) {
             fetchPosts();
+            console.log("Profile ID");
+            console.log(props.profile.profile_id);
+            setPrimaryColor(props.profile.primary_color)
         }
-    }, [props.isAuth])
+    }, [props.isAuth, props.profile.primary_color])
 
     const classes = useStyles();
     
@@ -79,15 +90,31 @@ const Posts = (props) => {
         setMenuOpen(false);
     };
     
-
     const logout = () => {
         console.log("Logout Successful");
         props.setProfile([]);
         props.setIsAuth(false);
     }
+
+    var theme = createTheme({
+        palette: {
+            primary: {
+                light: '#757ce8',
+                main: primaryColor,
+                dark: '#002884',
+                contrastText: '#fff',
+            },
+            secondary: {
+                light: '#ff7961',
+                main: '#f44336',
+                dark: '#ba000d',
+                contrastText: '#000',
+            },
+        },
+    });
     
     return (
-        <div>
+        <ThemeProvider theme={theme}>
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h5">
@@ -104,11 +131,12 @@ const Posts = (props) => {
                 </Toolbar>
             </AppBar>
             <br />
-            <Button variant="contained" color="primary" size={"medium"} onClick={() => {setDialogOpen(true);}}><b>Post</b></Button>
+            <Button variant="contained" color="primary" size={"medium"} onClick={() => {setPostDialogOpen(true);}}><b>Post</b></Button>
             <Container maxWidth="sm">
-                {posts.map((item) => (<PostCard key={item.post_id} user={item.user_name} content={item.content} likeCount={item.likes} img_url={item.user_img}/>))}
+                {posts.map((item) => (<PostCard key={item.post_id} post={item} viewer_ID={props.profile.profile_id}/>))}
             </Container>
-            <SubmitPostDialog open={dialogOpen} handleClose={() => {setDialogOpen(false);}} handleSubmit={handleSubmit} profile={props.profile}/>
+            <SubmitPostDialog open={postDialogOpen} handleClose={() => {setPostDialogOpen(false);}} handleSubmit={handleSubmitPost} profile={props.profile}/>
+            <ColorPicker open={colorDialogOpen} handleClose={() => {setColorDialogOpen(false);}} handleSubmit={handleSubmitColor}/>
             <Popper open={menuOpen} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
                 {({ TransitionProps, placement }) => (
                     <Grow
@@ -129,14 +157,16 @@ const Posts = (props) => {
                                 onLogoutSuccess={logout}
                             >
                             </GoogleLogout>
-                            
+                            <MenuItem onClick={() => {setMenuOpen(false); setColorDialogOpen(true);}}>
+                                Select Accent Color
+                            </MenuItem>
                         </MenuList>
                         </ClickAwayListener>
                     </Paper>
                     </Grow>
                 )}
             </Popper>
-        </div>
+        </ThemeProvider>
     )
 }
 
