@@ -27,7 +27,7 @@ const SinglePostPage = () => {
         style={{
             position: 'absolute', left: '50%', top: '50%',
             transform: 'translate(-50%, -50%)',
-            width: "50%"
+            maxWidth: "50%"
         }}
         >
             <PostCard key={post.post_id} post={post} viewer_ID={-1}/>

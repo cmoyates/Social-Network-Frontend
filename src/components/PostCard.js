@@ -11,6 +11,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import { useState, useEffect } from 'react';
+import Comments from './Comments';
 
 const useStyles = makeStyles((theme) => ({
     cardHeader: {
@@ -61,7 +62,6 @@ const PostCard = (props) => {
     }
 
     const isSinglePostPage = props.viewer_ID === -1;
-    const defaultColor = (props.viewer_ID === -1) ? "#444444" : "default";
 
     return (
         <Card style={{margin: 20,}}>
@@ -86,15 +86,17 @@ const PostCard = (props) => {
                     }}>Like ({props.post.likes.length})</Button>
                     <Divider orientation="vertical" flexItem />
                     <Button size={"small"} disabled={isSinglePostPage} startIcon={<CommentIcon />} onClick={() => {
-                        console.log("Comment");
+                        //console.log("Comment");
+                        props.commentCallback();
                     }}>Comment</Button>
                     <Divider orientation="vertical" flexItem />
                     <Button size={"small"} startIcon={<ShareIcon />} onClick={() => {
-                        console.log("Share");
+                        //console.log("Share");
                         navigator.clipboard.writeText("https://cmoyates.github.io/Social-Network-Frontend/#/post/" + props.post.post_id);
                     }}>Share</Button>
                 </Grid>
             </CardActions>
+            <Comments commentList={props.post.comments.commentList}/>
         </Card>
     )
 }

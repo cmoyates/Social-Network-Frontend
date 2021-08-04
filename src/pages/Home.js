@@ -11,8 +11,9 @@ const Home = (props) => {
             const res = await fetch('https://fast-coast-04774.herokuapp.com/profiles/email/' + response.profileObj.email);
             const data = await res.json();
             profile = data;
-            console.log("Data");
-            console.log(data)
+            //console.log("Data");
+            //console.log(data);
+            console.log("Profile Exists!");
         } catch (error) {
             console.log(error);
             profileIsNew = true;
@@ -26,7 +27,7 @@ const Home = (props) => {
                     user_name: response.profileObj.name,
                     img_url: response.profileObj.imageUrl,
                 };
-                console.log(newProfile);
+                //console.log(newProfile);
                 const res = await fetch("https://fast-coast-04774.herokuapp.com/profiles", {
                     method: "POST",
                     headers : { 
@@ -36,19 +37,22 @@ const Home = (props) => {
                     body: JSON.stringify(newProfile)
                 });
                 profile = await res.json();
+                console.log("Profile Created!");
             } catch (error) {
                 console.log(error);
                 return;
             }
         }
-        console.log(profile);
+        //console.log(profile);
         props.setProfile(profile);
-        console.log("Profile");
-        console.log(profile);
+        //console.log("Profile");
+        //console.log(profile);
         props.setIsAuth(true);
-        console.log(response);
+        //console.log(response);
+        console.log("Login Successful");
     }
     const responseGoogleFailure = (response) => {
+        console.log("Login Failed");
         console.log(response);
     }
 

@@ -1,6 +1,7 @@
 import React from 'react'
 import PostCard from "../components/PostCard.js";
 import SubmitPostDialog from '../components/SubmitPostDialog';
+import SubmitCommentDialog from '../components/SubmitCommentDilog.js';
 import { GoogleLogout } from 'react-google-login';
 import Container from "@material-ui/core/Container";
 import Button from '@material-ui/core/Button';
@@ -36,15 +37,17 @@ const useStyles = makeStyles((theme) => ({
 const Posts = (props) => {
 
     const [posts, setPosts] = useState([]);
+    const [commentingPost, setCommentingPost] = useState(null);
     const [primaryColor, setPrimaryColor] = useState('#3f50b5');
     const [postDialogOpen, setPostDialogOpen] = useState(false);
     const [colorDialogOpen, setColorDialogOpen] = useState(false);
+    const [commentDialogOpen, setCommentDialogOpen] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const anchorRef = useRef(null);
 
     const handleSubmitPost = async (post) => {
         setPostDialogOpen(false);
-        console.log(post)
+        //console.log(post)
         const newPost = await fetch("https://fast-coast-04774.herokuapp.com/posts", {
         method: "POST",
         headers : { 
@@ -53,7 +56,7 @@ const Posts = (props) => {
         },
         body: JSON.stringify(post)
         });
-        console.log(newPost);
+        //console.log(newPost);
         await fetchPosts();
     };
 
@@ -63,19 +66,34 @@ const Posts = (props) => {
         //console.log(color);
     }
 
+    const handleSubmitComment = async (comment) => {
+        setCommentDialogOpen(false);
+        //console.log("Comment");
+        //console.log(comment);
+        commentingPost.comments.commentList.push(comment);
+        //console.log(commentingPost);
+        const newPost = await fetch("https://fast-coast-04774.herokuapp.com/posts/" + commentingPost.post_id, {
+        method: "PUT",
+        headers : { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+        },
+        body: JSON.stringify(commentingPost)
+        });
+        //console.log(newPost.json());
+    }
+
     const fetchPosts = async () => {
         const res = await fetch('https://fast-coast-04774.herokuapp.com/posts');
         const data = await res.json();
         document.title = "Social Network"
 
-        console.log(data);
+        //console.log(data);
         setPosts(data);
     }
     useEffect(() => {
         if (props.isAuth) {
             fetchPosts();
-            console.log("Profile ID");
-            console.log(props.profile.profile_id);
             setPrimaryColor(props.profile.primary_color)
         }
     }, [props.isAuth, props.profile.primary_color])
@@ -133,9 +151,13 @@ const Posts = (props) => {
             <br />
             <Button variant="contained" color="primary" size={"medium"} onClick={() => {setPostDialogOpen(true);}}><b>Post</b></Button>
             <Container maxWidth="sm">
-                {posts.map((item) => (<PostCard key={item.post_id} post={item} viewer_ID={props.profile.profile_id}/>))}
+                {posts.map((item) => (<PostCard key={item.post_id} post={item} viewer_ID={props.profile.profile_id} commentCallback={() => {
+                    setCommentingPost(item);
+                    setCommentDialogOpen(true);
+                }}/>))}
             </Container>
             <SubmitPostDialog open={postDialogOpen} handleClose={() => {setPostDialogOpen(false);}} handleSubmit={handleSubmitPost} profile={props.profile}/>
+            <SubmitCommentDialog open={commentDialogOpen} handleClose={() => {setCommentDialogOpen(false);}} handleSubmit={handleSubmitComment} profile={props.profile} post={commentingPost}/>
             <ColorPicker open={colorDialogOpen} handleClose={() => {setColorDialogOpen(false);}} handleSubmit={handleSubmitColor}/>
             <Popper open={menuOpen} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
                 {({ TransitionProps, placement }) => (

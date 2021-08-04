@@ -8,14 +8,14 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import {useState} from 'react';
 
-function SubmitPostDialog(props) {
+function SubmitCommentDialog(props) {
 
     const [content, setContent] = useState("");
 
     return (
         <div>
             <Dialog open={props.open} onClose={props.handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Post</DialogTitle>
+                <DialogTitle id="form-dialog-title">Comment</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         {props.userName}
@@ -50,4 +50,4 @@ function SubmitPostDialog(props) {
     );
 }
 
-export default SubmitPostDialog;
+export default SubmitCommentDialog;
