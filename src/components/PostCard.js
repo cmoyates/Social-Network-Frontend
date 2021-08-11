@@ -54,12 +54,12 @@ const PostCard = (props) => {
         }
 
         const newPost = await fetch("https://fast-coast-04774.herokuapp.com/posts/" + props.post.post_id, {
-        method: "PUT",
-        headers : { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-        },
-        body: JSON.stringify(props.post)
+            method: "PUT",
+            headers : { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(props.post)
         });
         //console.log(newPost);
         setPost(newPost);

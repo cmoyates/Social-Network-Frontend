@@ -33,7 +33,7 @@ const ProfilePage = (props) => {
     const [commentDialogOpen, setCommentDialogOpen] = useState(false);
     const [commentingPost, setCommentingPost] = useState(null);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [following, setFollowing] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const fetchPageProfile = async () => {
         try {
@@ -79,6 +79,25 @@ const ProfilePage = (props) => {
         setSnackbarOpen(false);
     };
 
+    const followProfile = async () => {
+        if (props.profile.profiles_following.includes(parseInt(id))) {
+            props.profile.profiles_following = props.profile.profiles_following.filter(item => item !== parseInt(id));
+        }
+        else {
+            props.profile.profiles_following.push(parseInt(id));
+        }
+        setLoading(true);
+        await fetch("https://fast-coast-04774.herokuapp.com/profiles/" + props.profile.profile_id, {
+            method: "PUT",
+            headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+            },
+            body: JSON.stringify(props.profile)
+        });
+        setLoading(false);
+    }
+
     useEffect( () => {
         fetchPageProfile();
     }, [id])
@@ -100,7 +119,7 @@ const ProfilePage = (props) => {
     else {
         return (
             <div>
-                <h1>{pageProfile.user_name} <Button variant="outlined" onClick={()=>{setFollowing(!following)}}>{(following) ? "Following" : "Follow"}</Button></h1>
+                <h1>{pageProfile.user_name} {(parseInt(id) !== props.profile.profile_id) ? <Button variant="outlined" onClick={()=>{followProfile();}}>{(props.profile.profiles_following.includes(parseInt(id))) ? "Following" : "Follow"}</Button> : null}</h1>
                 
                 <Container maxWidth="sm">
                     {posts.map((item) => (<PostCard key={item.post_id} post={item} viewer_ID={props.profile.profile_id} setSnackbarOpen={setSnackbarOpen} commentCallback={() => {

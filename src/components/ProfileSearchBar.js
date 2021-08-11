@@ -2,7 +2,7 @@ import React from 'react'
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {useState} from 'react';
-import {makeStyles} from '@material-ui/core/styles';
+import {makeStyles, withStyles} from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
@@ -14,6 +14,29 @@ const useStyles = makeStyles(() => ({
     disabled: {},
     notchedOutline: {}
 }));
+
+const CssTextField = withStyles({
+    /*root: {
+      /*'& label.Mui-focused': {
+        color: 'green',
+      },
+      '& .MuiInput-underline:after': {
+        borderBottomColor: 'green',
+      },
+      '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+          borderColor: '#ffffff',
+          background: '#ffffff'
+        },
+        '&:hover fieldset': {
+          borderColor: '#ffffff',
+        },
+        '&.Mui-focused fieldset': {
+          borderColor: '#ffffff',
+        },
+      },
+    },*/
+  })(TextField);
 
 const ProfileSearchBar = (props) => {
     let history = useHistory();
@@ -49,7 +72,7 @@ const ProfileSearchBar = (props) => {
                 popupIcon={null}
                 style={{hasPopupIcon: false, hasClearIcon: false}}
                 renderInput={(params) => (
-                <TextField
+                <CssTextField
                     {...params}
                     label="Search"
                     margin="normal"

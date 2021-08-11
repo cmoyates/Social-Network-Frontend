@@ -37,6 +37,16 @@ const Home = (props) => {
                     body: JSON.stringify(newProfile)
                 });
                 profile = await res.json();
+
+                profile.profiles_following = [profile.profile_id];
+                await fetch("https://fast-coast-04774.herokuapp.com/profiles/" + profile.profile_id, {
+                    method: "PUT",
+                    headers : { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(profile)
+                });
                 console.log("Profile Created!");
             } catch (error) {
                 console.log(error);
