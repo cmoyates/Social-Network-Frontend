@@ -6,6 +6,8 @@ import PageNotFound from './pages/PageNotFound';
 import {useState} from 'react';
 import ProtectedRoute from './components/ProtectedRoute';
 import SinglePostPage from './pages/SinglePostPage';
+import ProfilePage from './pages/ProfilePage';
+import LoggedInPage from './components/LoggedInPage';
 
 function App() {
 
@@ -17,9 +19,10 @@ function App() {
       <div className="App">
         <Switch>
           <Route exact path="/" component={()=><Home setProfile={setProfile} setIsAuth={setIsAuth} isAuth={isAuth}/>}/>
-          <ProtectedRoute path="/posts" isAuth={isAuth} component={(props)=><Posts {...props} profile={profile} setProfile={setProfile} isAuth={isAuth} setIsAuth={setIsAuth}/>}/>
+          <ProtectedRoute path="/posts" isAuth={isAuth} component={(props)=><LoggedInPage {...props} profile={profile} setProfile={setProfile} isAuth={isAuth} setIsAuth={setIsAuth} page={<Posts profile={profile}/>}/>}/>
           <Route exact path="/404" component={PageNotFound}/>
           <Route path="/post/:id" component={SinglePostPage}/>
+          <ProtectedRoute path="/profile/:id" profile={profile} isAuth={isAuth} component={(props)=><LoggedInPage {...props} profile={profile} setProfile={setProfile} isAuth={isAuth} setIsAuth={setIsAuth} page={<ProfilePage profile={profile}/>}/>}/>
           <Redirect to="/404"/>
         </Switch>
       </div>
