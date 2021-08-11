@@ -92,6 +92,7 @@ const PostCard = (props) => {
                     <Divider orientation="vertical" flexItem />
                     <Button size={"small"} startIcon={<ShareIcon />} onClick={() => {
                         //console.log("Share");
+                        props.setSnackbarOpen(true);
                         navigator.clipboard.writeText("https://cmoyates.github.io/Social-Network-Frontend/#/post/" + props.post.post_id);
                     }}>Share</Button>
                 </Grid>

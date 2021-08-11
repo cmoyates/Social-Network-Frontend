@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
@@ -16,6 +17,7 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from '@material-ui/core/Avatar';
 import MenuList from '@material-ui/core/MenuList';
+import Snackbar from '@material-ui/core/Snackbar';
 import { createTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import {useState, useEffect, useRef} from 'react';
 import ProfileSearchBar from '../components/ProfileSearchBar.js';
@@ -44,6 +46,7 @@ const Posts = (props) => {
     const [postDialogOpen, setPostDialogOpen] = useState(false);
     const [colorDialogOpen, setColorDialogOpen] = useState(false);
     const [commentDialogOpen, setCommentDialogOpen] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
     //const [searchOptionsOpen, setSearchOptionsOpen] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const anchorRef = useRef(null);
@@ -116,7 +119,14 @@ const Posts = (props) => {
 
         setMenuOpen(false);
     };
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
     
+        setSnackbarOpen(false);
+      };
+
     const logout = () => {
         console.log("Logout Successful");
         props.setProfile([]);
@@ -162,7 +172,7 @@ const Posts = (props) => {
             <br />
             <Button variant="contained" color="primary" size={"medium"} onClick={() => {setPostDialogOpen(true);}}><b>Post</b></Button>
             <Container maxWidth="sm">
-                {posts.map((item) => (<PostCard key={item.post_id} post={item} viewer_ID={props.profile.profile_id} commentCallback={() => {
+                {posts.map((item) => (<PostCard key={item.post_id} post={item} viewer_ID={props.profile.profile_id} setSnackbarOpen={setSnackbarOpen} commentCallback={() => {
                     setCommentingPost(item);
                     setCommentDialogOpen(true);
                 }}/>))}
@@ -170,6 +180,17 @@ const Posts = (props) => {
             <SubmitPostDialog open={postDialogOpen} handleClose={() => {setPostDialogOpen(false);}} handleSubmit={handleSubmitPost} profile={props.profile}/>
             <SubmitCommentDialog open={commentDialogOpen} handleClose={() => {setCommentDialogOpen(false);}} handleSubmit={handleSubmitComment} profile={props.profile} post={commentingPost}/>
             <ColorPicker open={colorDialogOpen} handleClose={() => {setColorDialogOpen(false);}} handleSubmit={handleSubmitColor}/>
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={3000}
+                onClose={handleSnackbarClose}
+                message="Link copied to clipboard"
+                action={
+                    <IconButton size="small" aria-label="close" color="inherit" onClick={handleSnackbarClose}>
+                    <CloseIcon fontSize="small" />
+                    </IconButton>
+                }
+            />
             <Popper open={menuOpen} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
                 {({ TransitionProps, placement }) => (
                     <Grow
