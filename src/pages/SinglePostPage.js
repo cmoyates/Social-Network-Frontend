@@ -2,6 +2,7 @@ import React from 'react'
 import PostCard from '../components/PostCard'
 import {useParams} from "react-router-dom";
 import {useState, useEffect} from 'react';
+import Grid from '@material-ui/core/Grid';
 
 const SinglePostPage = () => {
 
@@ -23,14 +24,12 @@ const SinglePostPage = () => {
 
     return (
         (post) ? 
-        <div
-        style={{
-            position: 'absolute', left: '50%', top: '50%',
-            transform: 'translate(-50%, -50%)',
-            maxWidth: "50%"
-        }}
-        >
-            <PostCard key={post.post_id} post={post} viewer_ID={-1}/>
+        <div>
+            <Grid container direction="column" alignItems="center" justify="center" style={{minHeight: "100vh"}}>
+                <Grid item>
+                    <PostCard key={post.post_id} post={post} viewer_ID={-1}/>
+                </Grid>
+            </Grid>
         </div> :
         null
     )

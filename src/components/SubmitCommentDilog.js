@@ -17,9 +17,6 @@ function SubmitCommentDialog(props) {
             <Dialog open={props.open} onClose={props.handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Comment</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
-                        {props.userName}
-                    </DialogContentText>
                     <TextField
                         value={content} onChange={(e) => {setContent(e.target.value)}}
                         autoFocus

@@ -18,6 +18,7 @@ import Avatar from '@material-ui/core/Avatar';
 import MenuList from '@material-ui/core/MenuList';
 import { createTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import {useState, useEffect, useRef} from 'react';
+import ProfileSearchBar from '../components/ProfileSearchBar.js';
 import ColorPicker from '../components/ColorPicker.js';
 
 
@@ -37,11 +38,13 @@ const useStyles = makeStyles((theme) => ({
 const Posts = (props) => {
 
     const [posts, setPosts] = useState([]);
+    const [profiles, setProfiles] = useState([]);
     const [commentingPost, setCommentingPost] = useState(null);
     const [primaryColor, setPrimaryColor] = useState('#3f50b5');
     const [postDialogOpen, setPostDialogOpen] = useState(false);
     const [colorDialogOpen, setColorDialogOpen] = useState(false);
     const [commentDialogOpen, setCommentDialogOpen] = useState(false);
+    //const [searchOptionsOpen, setSearchOptionsOpen] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const anchorRef = useRef(null);
 
@@ -86,14 +89,20 @@ const Posts = (props) => {
     const fetchPosts = async () => {
         const res = await fetch('https://fast-coast-04774.herokuapp.com/posts');
         const data = await res.json();
-        document.title = "Social Network"
-
         //console.log(data);
         setPosts(data);
     }
+    const fetchProfiles = async () => {
+        const res = await fetch('https://fast-coast-04774.herokuapp.com/profiles');
+        const data = await res.json();
+        //console.log(data);
+        setProfiles(data);
+    }
     useEffect(() => {
         if (props.isAuth) {
+            document.title = "Social Network"
             fetchPosts();
+            fetchProfiles();
             setPrimaryColor(props.profile.primary_color)
         }
     }, [props.isAuth, props.profile.primary_color])
@@ -131,6 +140,8 @@ const Posts = (props) => {
         },
     });
     
+    //<ProfileSearchBar style={{flexGrow: 1}} profiles={profiles}/>
+
     return (
         <ThemeProvider theme={theme}>
             <AppBar position="static">
