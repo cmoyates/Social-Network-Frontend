@@ -3,6 +3,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     cardHeader: {
@@ -17,16 +18,23 @@ const useStyles = makeStyles((theme) => ({
 
 const Comments = (props) => {
     const classes = useStyles();
+    let history = useHistory();
+
+    const goToCommenterProfile = (item) => {
+        if (!props.isSinglePostPage) {
+            history.push('/profile/' + item.user_id);
+        }
+    }
 
     return ((props.commentList.length > 0) ?
         <div>
-            {props.commentList.map((item) => (
-                <div>
+            {props.commentList.map((item, index) => (
+                <div key={index}>
                     <Divider/>
                     <CardContent>
                         <div className={classes.cardHeader}>
-                            <Avatar src={item.user_img}/>
-                            <h4 className={classes.nameText}>{item.user_name}</h4>
+                            <Avatar src={item.user_img} onClick={()=>{goToCommenterProfile(item)}}/>
+                            <h4 className={classes.nameText} onClick={()=>{goToCommenterProfile(item)}}>{item.user_name}</h4>
                         </div>
                         <Divider/>
                         <p>{item.content}</p>

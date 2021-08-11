@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import { useState, useEffect } from 'react';
 import Comments from './Comments';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     cardHeader: {
@@ -24,8 +25,9 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
 const PostCard = (props) => {
+    const classes = useStyles();
+    let history = useHistory();
 
     const [post, setPost] = useState([]);
 
@@ -33,9 +35,11 @@ const PostCard = (props) => {
         setPost(props.post);
     }, [])
 
-    const classes = useStyles();
-    //console.log("Post")
-    //console.log(props.post)
+    const goToPosterProfile = () => {
+        if (!isSinglePostPage) {
+            history.push('/profile/' + post.user_id);
+        }
+    }
 
     const likeAPost = async () => {
         //console.log(props.viewer_ID);
@@ -67,8 +71,8 @@ const PostCard = (props) => {
         <Card style={{margin: 20,}}>
             <CardContent>
                 <div className={classes.cardHeader}>
-                    <Avatar src={props.post.user_img}/>
-                    <h3 className={classes.nameText}>{props.post.user_name}</h3>
+                    <Avatar src={props.post.user_img} onClick={goToPosterProfile}/>
+                    <h3 className={classes.nameText} onClick={goToPosterProfile}>{props.post.user_name}</h3>
                 </div>
                 <Divider/>
                 <p>{props.post.content}</p>
@@ -78,7 +82,7 @@ const PostCard = (props) => {
                 <Grid
                 container
                 direction="row"
-                justify="space-around"
+                justifyContent="space-around"
                 alignItems="center"
                 >
                     <Button size={"small"} color={(props.post.likes.includes(props.viewer_ID)) ? "primary" : "default"} disabled={isSinglePostPage} startIcon={<ThumbUpIcon />} onClick={() => {
@@ -97,7 +101,7 @@ const PostCard = (props) => {
                     }}>Share</Button>
                 </Grid>
             </CardActions>
-            <Comments commentList={props.post.comments.commentList}/>
+            <Comments commentList={props.post.comments.commentList} isSinglePostPage={isSinglePostPage}/>
         </Card>
     )
 }

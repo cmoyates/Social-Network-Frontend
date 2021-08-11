@@ -15,6 +15,7 @@ const SinglePostPage = () => {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
 
     const fetchPost = async () => {
+        setPost(null);
         const res = await fetch('https://fast-coast-04774.herokuapp.com/posts/' + id);
         const data = await res.json();
         document.title = "Social Network"
@@ -24,7 +25,7 @@ const SinglePostPage = () => {
     }
     useEffect( () => {
         fetchPost();
-    }, [])
+    }, [id])
 
     const handleSnackbarClose = (event, reason) => {
         if (reason === 'clickaway') {

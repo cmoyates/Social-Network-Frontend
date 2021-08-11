@@ -11,6 +11,8 @@ import {useState, useEffect, useRef} from 'react';
 import SettingsMenu from './SettingsMenu';
 import ColorPicker from './ColorPicker';
 import ProfileSearchBar from '../components/ProfileSearchBar.js';
+import Grid from '@material-ui/core/Grid';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -26,11 +28,12 @@ const useStyles = makeStyles((theme) => ({
 
 const LoggedInPage = (props) => {
     const classes = useStyles();
+    let history = useHistory();
 
     const [menuOpen, setMenuOpen] = useState(false);
     const [colorDialogOpen, setColorDialogOpen] = useState(false);
     const [primaryColor, setPrimaryColor] = useState('#3f50b5');
-    //const [searchOptionsOpen, setSearchOptionsOpen] = useState(false);
+    const [profiles, setProfiles] = useState([]);
     const anchorRef = useRef(null);
 
     const logout = () => {
@@ -38,6 +41,17 @@ const LoggedInPage = (props) => {
         props.setProfile([]);
         props.setIsAuth(false);
     }
+
+    const fetchProfiles = async () => {
+        const res = await fetch('https://fast-coast-04774.herokuapp.com/profiles');
+        const data = await res.json();
+        //console.log(data);
+        setProfiles(data);
+    }
+
+    useEffect(() => {
+        fetchProfiles();
+    }, [])
 
     const handleSubmitColor = async (color) => {
         setColorDialogOpen(false);
@@ -69,19 +83,27 @@ const LoggedInPage = (props) => {
         },
     });
 
-    //<ProfileSearchBar style={{flexGrow: 1}} profiles={profiles}/>
-
     return (
         <ThemeProvider theme={theme}>
             <AppBar position="static">
                 <Toolbar>
-                    <Typography variant="h5">
-                        Social Network
-                    </Typography>
-                    <div className={classes.title}/>
-                    <Typography>
-                        {props.profile.user_name}
-                    </Typography>
+                    <Grid container direction="row" alignItems="center" justifyContent="space-between">
+                        <Grid item>
+                        <Typography variant="h5" onClick={()=>{history.push('/posts');}}>
+                            Social Network
+                        </Typography>
+                        </Grid>
+                        <Grid item>
+                        <div className={classes.title}>
+                            <ProfileSearchBar style={{flexGrow: 1}} profiles={profiles}/>
+                        </div>
+                        </Grid>
+                        <Grid item>
+                        <Typography>
+                            {props.profile.user_name}
+                        </Typography>
+                        </Grid>
+                    </Grid>
                     <IconButton className={classes.menuButton} color="inherit" aria-label="menu" onClick={() => {setMenuOpen(!menuOpen)}} ref={anchorRef} 
                         aria-controls={menuOpen ? 'menu-list-grow' : undefined} aria-haspopup="true">
                         <Avatar src={props.profile.img_url}/>

@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
 const Posts = (props) => {
 
     const [posts, setPosts] = useState([]);
-    const [profiles, setProfiles] = useState([]);
     const [commentingPost, setCommentingPost] = useState(null);
     const [postDialogOpen, setPostDialogOpen] = useState(false);
     const [commentDialogOpen, setCommentDialogOpen] = useState(false);
@@ -67,17 +66,11 @@ const Posts = (props) => {
         console.log(data);
         setPosts(data);
     }
-    const fetchProfiles = async () => {
-        const res = await fetch('https://fast-coast-04774.herokuapp.com/profiles');
-        const data = await res.json();
-        //console.log(data);
-        setProfiles(data);
-    }
+    
     useEffect(() => {
         document.title = "Social Network"
             console.log("Test")
             fetchPosts();
-            fetchProfiles();
     }, [props.profile.primary_color])
 
     const classes = useStyles();

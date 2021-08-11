@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -15,6 +16,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ProfileSearchBar = (props) => {
+    let history = useHistory();
 
     const classes = useStyles();
 
@@ -34,15 +36,18 @@ const ProfileSearchBar = (props) => {
     return (
         <div style={{ width: 300 }}>
             <Autocomplete
-                freeSolo
                 id="free-solo-2-demo"
                 disableClearable
-                options={props.profiles.map((option) => option.user_name)}
+                options={props.profiles}
+                getOptionLabel={(option)=>{return option.user_name}}
                 open={open}
                 onOpen={handleOpen}
                 onClose={() => setOpen(false)}
                 inputValue={inputValue}
                 onInputChange={handleInputChange}
+                onChange={(event, value)=>{history.push('/profile/' + value.profile_id);}}
+                popupIcon={null}
+                style={{hasPopupIcon: false, hasClearIcon: false}}
                 renderInput={(params) => (
                 <TextField
                     {...params}

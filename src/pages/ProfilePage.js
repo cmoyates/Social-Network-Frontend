@@ -37,6 +37,7 @@ const ProfilePage = (props) => {
 
     const fetchPageProfile = async () => {
         try {
+            setPageProfile(null);
             const res = await fetch('https://fast-coast-04774.herokuapp.com/profiles/' + id);
             const data = await res.json();
             document.title = "Social Network"
@@ -80,7 +81,7 @@ const ProfilePage = (props) => {
 
     useEffect( () => {
         fetchPageProfile();
-    }, [])
+    }, [id])
 
     if (!pageProfile) {
         return null;
