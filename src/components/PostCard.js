@@ -42,14 +42,10 @@ const PostCard = (props) => {
     }
 
     const likeAPost = async () => {
-        //console.log(props.viewer_ID);
-        //console.log("Like");
         if (props.post.likes.includes(props.viewer_ID)) {
-            //console.log("Yes");
             props.post.likes = props.post.likes.filter(item => item !== props.viewer_ID)
         }
         else {
-            //console.log("No");
             props.post.likes.push(props.viewer_ID);
         }
 
@@ -61,7 +57,6 @@ const PostCard = (props) => {
             },
             body: JSON.stringify(props.post)
         });
-        //console.log(newPost);
         setPost(newPost);
     }
 

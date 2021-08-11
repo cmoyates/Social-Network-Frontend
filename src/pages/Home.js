@@ -67,7 +67,7 @@ const Home = (props) => {
     }
 
     if (props.isAuth) {
-        return <Redirect to="/posts"/>;
+        return <Redirect to="/feed"/>;
     }
     else {
         return (

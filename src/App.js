@@ -1,7 +1,7 @@
 import './App.css';
 import {HashRouter as Router, Route, Switch, Redirect} from "react-router-dom";
 import Home from './pages/Home';
-import Posts from './pages/Posts';
+import Feed from './pages/Feed';
 import PageNotFound from './pages/PageNotFound';
 import {useState} from 'react';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -19,7 +19,7 @@ function App() {
       <div className="App">
         <Switch>
           <Route exact path="/" component={()=><Home setProfile={setProfile} setIsAuth={setIsAuth} isAuth={isAuth}/>}/>
-          <ProtectedRoute path="/posts" isAuth={isAuth} component={(props)=><LoggedInPage {...props} profile={profile} setProfile={setProfile} isAuth={isAuth} setIsAuth={setIsAuth} page={<Posts profile={profile}/>}/>}/>
+          <ProtectedRoute path="/Feed" isAuth={isAuth} component={(props)=><LoggedInPage {...props} profile={profile} setProfile={setProfile} isAuth={isAuth} setIsAuth={setIsAuth} page={<Feed profile={profile}/>}/>}/>
           <Route exact path="/404" component={PageNotFound}/>
           <Route path="/post/:id" component={SinglePostPage}/>
           <ProtectedRoute path="/profile/:id" profile={profile} isAuth={isAuth} component={(props)=><LoggedInPage {...props} profile={profile} setProfile={setProfile} isAuth={isAuth} setIsAuth={setIsAuth} page={<ProfilePage profile={profile}/>}/>}/>

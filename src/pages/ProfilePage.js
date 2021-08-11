@@ -40,7 +40,7 @@ const ProfilePage = (props) => {
             setPageProfile(null);
             const res = await fetch('https://fast-coast-04774.herokuapp.com/profiles/' + id);
             const data = await res.json();
-            document.title = "Social Network"
+            document.title = data.user_name
 
             console.log(data);
             setPageProfile(data);

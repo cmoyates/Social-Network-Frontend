@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const Posts = (props) => {
+const Feed = (props) => {
 
     const [posts, setPosts] = useState([]);
     const [commentingPost, setCommentingPost] = useState(null);
@@ -60,7 +60,7 @@ const Posts = (props) => {
     }
 
     const fetchPosts = async () => {
-        const res = await fetch('https://fast-coast-04774.herokuapp.com/posts');
+        const res = await fetch('https://fast-coast-04774.herokuapp.com/posts/following/' + props.profile.profile_id);
         const data = await res.json();
         console.log("Posts");
         console.log(data);
@@ -110,4 +110,4 @@ const Posts = (props) => {
     )
 }
 
-export default Posts
+export default Feed
