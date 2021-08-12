@@ -89,7 +89,7 @@ const LoggedInPage = (props) => {
                 <Toolbar>
                     <Grid container direction="row" alignItems="center" justifyContent="space-between">
                         <Grid item>
-                        <Typography variant="h5" onClick={()=>{history.push('/feed');}}>
+                        <Typography variant="h5" style={{cursor:'pointer'}} onClick={()=>{history.push('/feed');}}>
                             Social Network
                         </Typography>
                         </Grid>
@@ -99,7 +99,7 @@ const LoggedInPage = (props) => {
                         </div>
                         </Grid>
                         <Grid item>
-                        <Typography onClick={()=>{history.push('/profile/' + props.profile.profile_id);}}>
+                        <Typography style={{cursor:'pointer'}} onClick={()=>{history.push('/profile/' + props.profile.profile_id);}}>
                             {props.profile.user_name}
                         </Typography>
                         </Grid>

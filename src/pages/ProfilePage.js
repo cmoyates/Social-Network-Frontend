@@ -4,11 +4,11 @@ import {useState, useEffect} from 'react';
 import PostCard from '../components/PostCard';
 import Container from "@material-ui/core/Container";
 import { makeStyles } from '@material-ui/core/styles';
-import SubmitCommentDialog from '../components/SubmitCommentDilog';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
+import SubmitPostDialog from '../components/SubmitPostDialog';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -119,15 +119,15 @@ const ProfilePage = (props) => {
     else {
         return (
             <div>
-                <h1>{pageProfile.user_name} {(parseInt(id) !== props.profile.profile_id) ? <Button variant="outlined" onClick={()=>{followProfile();}}>{(props.profile.profiles_following.includes(parseInt(id))) ? "Following" : "Follow"}</Button> : null}</h1>
-                
+                <h1>{pageProfile.user_name}</h1>
+                {(parseInt(id) !== props.profile.profile_id) ? <Button variant="outlined" onClick={()=>{followProfile();}}>{(props.profile.profiles_following.includes(parseInt(id))) ? "Following" : "Follow"}</Button> : null}
                 <Container maxWidth="sm">
                     {posts.map((item) => (<PostCard key={item.post_id} post={item} viewer_ID={props.profile.profile_id} setSnackbarOpen={setSnackbarOpen} commentCallback={() => {
                         setCommentingPost(item);
                         setCommentDialogOpen(true);
                     }}/>))}
                 </Container>
-                <SubmitCommentDialog open={commentDialogOpen} handleClose={() => {setCommentDialogOpen(false);}} handleSubmit={handleSubmitComment} profile={props.profile} post={commentingPost}/>
+                <SubmitPostDialog comment={true} open={commentDialogOpen} handleClose={() => {setCommentDialogOpen(false);}} handleSubmit={handleSubmitComment} profile={props.profile} post={commentingPost}/>
                 <Snackbar
                     open={snackbarOpen}
                     autoHideDuration={3000}

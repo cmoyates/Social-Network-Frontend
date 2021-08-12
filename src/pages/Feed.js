@@ -1,12 +1,10 @@
 import React from 'react'
 import PostCard from "../components/PostCard.js";
 import SubmitPostDialog from '../components/SubmitPostDialog';
-import SubmitCommentDialog from '../components/SubmitCommentDilog.js';
 import Container from "@material-ui/core/Container";
 import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
-//import Avatar from '@material-ui/core/Avatar';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import {useState, useEffect} from 'react';
@@ -68,10 +66,9 @@ const Feed = (props) => {
     }
     
     useEffect(() => {
-        document.title = "Social Network"
-            console.log("Test")
-            fetchPosts();
-    }, [props.profile.primary_color])
+        document.title = "Feed";
+        fetchPosts();
+    }, [])
 
     const classes = useStyles();
     
@@ -93,8 +90,8 @@ const Feed = (props) => {
                     setCommentDialogOpen(true);
                 }}/>))}
             </Container>
-            <SubmitPostDialog open={postDialogOpen} handleClose={() => {setPostDialogOpen(false);}} handleSubmit={handleSubmitPost} profile={props.profile}/>
-            <SubmitCommentDialog open={commentDialogOpen} handleClose={() => {setCommentDialogOpen(false);}} handleSubmit={handleSubmitComment} profile={props.profile} post={commentingPost}/>
+            <SubmitPostDialog comment={false} open={postDialogOpen} handleClose={() => {setPostDialogOpen(false);}} handleSubmit={handleSubmitPost} profile={props.profile}/>
+            <SubmitPostDialog comment={true} open={commentDialogOpen} handleClose={() => {setCommentDialogOpen(false);}} handleSubmit={handleSubmitComment} profile={props.profile} post={commentingPost}/>
             <Snackbar
                 open={snackbarOpen}
                 autoHideDuration={3000}
@@ -102,7 +99,7 @@ const Feed = (props) => {
                 message="Link copied to clipboard"
                 action={
                     <IconButton size="small" aria-label="close" color="inherit" onClick={handleSnackbarClose}>
-                    <CloseIcon fontSize="small" />
+                        <CloseIcon fontSize="small" />
                     </IconButton>
                 }
             />

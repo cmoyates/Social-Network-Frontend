@@ -5,7 +5,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import {useState} from 'react';
 
 function SubmitPostDialog(props) {
@@ -15,7 +14,7 @@ function SubmitPostDialog(props) {
     return (
         <div>
             <Dialog open={props.open} onClose={props.handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Post</DialogTitle>
+                <DialogTitle id="form-dialog-title">{(props.comment) ? "Comment" : "Post"}</DialogTitle>
                 <DialogContent>
                     <TextField
                         value={content} onChange={(e) => {setContent(e.target.value)}}

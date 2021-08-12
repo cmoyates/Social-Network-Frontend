@@ -18,10 +18,11 @@ const useStyles = makeStyles((theme) => ({
     cardHeader: {
         display: 'flex',
         flexDirection: 'row',
-        alignItems: "center"
+        alignItems: "center",
     },
     nameText: {
         paddingLeft: "10px",
+        cursor:'pointer',
     }
 }));
 
@@ -66,7 +67,7 @@ const PostCard = (props) => {
         <Card style={{margin: 20,}}>
             <CardContent>
                 <div className={classes.cardHeader}>
-                    <Avatar src={props.post.user_img} onClick={goToPosterProfile}/>
+                    <Avatar style={{cursor:'pointer'}} src={props.post.user_img} onClick={goToPosterProfile}/>
                     <h3 className={classes.nameText} onClick={goToPosterProfile}>{props.post.user_name}</h3>
                 </div>
                 <Divider/>
@@ -81,16 +82,17 @@ const PostCard = (props) => {
                 alignItems="center"
                 >
                     <Button size={"small"} color={(props.post.likes.includes(props.viewer_ID)) ? "primary" : "default"} disabled={isSinglePostPage} startIcon={<ThumbUpIcon />} onClick={() => {
+                        // Like the post
                         likeAPost();
                     }}>Like ({props.post.likes.length})</Button>
                     <Divider orientation="vertical" flexItem />
                     <Button size={"small"} disabled={isSinglePostPage} startIcon={<CommentIcon />} onClick={() => {
-                        //console.log("Comment");
+                        // Comment on the post
                         props.commentCallback();
                     }}>Comment</Button>
                     <Divider orientation="vertical" flexItem />
                     <Button size={"small"} startIcon={<ShareIcon />} onClick={() => {
-                        //console.log("Share");
+                        // Share the post
                         props.setSnackbarOpen(true);
                         navigator.clipboard.writeText("https://cmoyates.github.io/Social-Network-Frontend/#/post/" + props.post.post_id);
                     }}>Share</Button>

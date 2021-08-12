@@ -2,31 +2,21 @@ import React from 'react'
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {useState} from 'react';
-import {makeStyles, withStyles} from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 
-const useStyles = makeStyles(() => ({
-    root: {
-        '&$disabled $notchedOutline': {
-            boarderColor: "yellow !important"
-        }
-    },
-    disabled: {},
-    notchedOutline: {}
-}));
-
 const CssTextField = withStyles({
-    /*root: {
+    root: {
       /*'& label.Mui-focused': {
         color: 'green',
       },
       '& .MuiInput-underline:after': {
         borderBottomColor: 'green',
-      },
+      },*/
       '& .MuiOutlinedInput-root': {
         '& fieldset': {
           borderColor: '#ffffff',
-          background: '#ffffff'
+          //background: '#ffffff'
         },
         '&:hover fieldset': {
           borderColor: '#ffffff',
@@ -35,13 +25,11 @@ const CssTextField = withStyles({
           borderColor: '#ffffff',
         },
       },
-    },*/
+    },
   })(TextField);
 
 const ProfileSearchBar = (props) => {
     let history = useHistory();
-
-    const classes = useStyles();
 
     const [inputValue, setInputValue] = useState("");
     const [open, setOpen] = useState(false);
@@ -77,11 +65,7 @@ const ProfileSearchBar = (props) => {
                     label="Search"
                     margin="normal"
                     variant="outlined"
-                    InputProps={{ ...params.InputProps, type: 'search', classes: {
-                        root: classes.root,
-                        disabled: classes.disabled,
-                        notchedOutline: classes.notchedOutline
-                    }}}
+                    InputProps={{ ...params.InputProps, type: 'search'}}
                 />
                 )}
             />

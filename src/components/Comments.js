@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
     },
     nameText: {
         paddingLeft: "10px",
+        cursor:'pointer'
     }
 }));
 
@@ -33,7 +34,7 @@ const Comments = (props) => {
                     <Divider/>
                     <CardContent>
                         <div className={classes.cardHeader}>
-                            <Avatar src={item.user_img} onClick={()=>{goToCommenterProfile(item)}}/>
+                            <Avatar style={{cursor:'pointer'}} src={item.user_img} onClick={()=>{goToCommenterProfile(item)}}/>
                             <h4 className={classes.nameText} onClick={()=>{goToCommenterProfile(item)}}>{item.user_name}</h4>
                         </div>
                         <Divider/>
