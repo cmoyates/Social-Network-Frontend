@@ -33,23 +33,29 @@ const PostCard = (props) => {
     const [post, setPost] = useState([]);
 
     useEffect(() => {
+        // Set the post from the props to the state
         setPost(props.post);
     }, [])
 
+    // Go to the profile page for the profile that made the post
     const goToPosterProfile = () => {
         if (!isSinglePostPage) {
             history.push('/profile/' + post.user_id);
         }
     }
 
+    // Like a post
     const likeAPost = async () => {
+        // If the user already likes the post, remove them from the list of profiles that like it
         if (props.post.likes.includes(props.viewer_ID)) {
             props.post.likes = props.post.likes.filter(item => item !== props.viewer_ID)
         }
+        // Otherwise add them to it
         else {
             props.post.likes.push(props.viewer_ID);
         }
 
+        // Update the post on the database
         const newPost = await fetch("https://fast-coast-04774.herokuapp.com/posts/" + props.post.post_id, {
             method: "PUT",
             headers : { 
@@ -58,9 +64,11 @@ const PostCard = (props) => {
             },
             body: JSON.stringify(props.post)
         });
+        // Set the updated post in the state
         setPost(newPost);
     }
 
+    // If the viewer ID is -1 the post is on a single post page
     const isSinglePostPage = props.viewer_ID === -1;
 
     return (

@@ -14,6 +14,7 @@ import ProfileSearchBar from '../components/ProfileSearchBar.js';
 import Grid from '@material-ui/core/Grid';
 import { useHistory } from 'react-router-dom';
 
+// Some styles
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -30,42 +31,44 @@ const LoggedInPage = (props) => {
     const classes = useStyles();
     let history = useHistory();
 
+    // A bunch of state stuff
     const [menuOpen, setMenuOpen] = useState(false);
     const [colorDialogOpen, setColorDialogOpen] = useState(false);
     const [primaryColor, setPrimaryColor] = useState('#3f50b5');
     const [profiles, setProfiles] = useState([]);
+
     const anchorRef = useRef(null);
 
+    // Log the user out
     const logout = () => {
         console.log("Logout Successful");
+        // Forget the profile
         props.setProfile([]);
+        // Revoke their authorisation
         props.setIsAuth(false);
     }
 
+    // Get all of the profiles (for use in the searchbar)
     const fetchProfiles = async () => {
         const res = await fetch('https://fast-coast-04774.herokuapp.com/profiles');
         const data = await res.json();
-        //console.log(data);
+        // And save it to the state
         setProfiles(data);
     }
-
-    useEffect(() => {
-        fetchProfiles();
-    }, [])
 
     const handleSubmitColor = async (color) => {
         setColorDialogOpen(false);
         setPrimaryColor(color);
-        //console.log(color);
     }
 
+    // Close the menu
     const handleMenuClose = (event) => {
-        if (anchorRef.current && anchorRef.current.contains(event.target)) {
-            return;
+        if (!(anchorRef.current && anchorRef.current.contains(event.target))) {
+            setMenuOpen(false);
         }
-        setMenuOpen(false);
     };
 
+    // Theme colors
     var theme = createTheme({
         palette: {
             primary: {
@@ -82,6 +85,11 @@ const LoggedInPage = (props) => {
             },
         },
     });
+
+    // Get all of the profiles when the page loads
+    useEffect(() => {
+        fetchProfiles();
+    }, [])
 
     return (
         <ThemeProvider theme={theme}>
