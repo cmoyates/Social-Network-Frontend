@@ -6,16 +6,18 @@ import Typography from '@material-ui/core/Typography';
 //import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
-import { createTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, makeStyles, ThemeProvider, alpha } from '@material-ui/core/styles';
 import {useState, useEffect, useRef} from 'react';
 import SettingsMenu from './SettingsMenu';
 import ColorPicker from './ColorPicker';
 import ProfileSearchBar from '../components/ProfileSearchBar.js';
-import Grid from '@material-ui/core/Grid';
 import { useHistory } from 'react-router-dom';
 
 // Some styles
 const useStyles = makeStyles((theme) => ({
+    grow: {
+        flexGrow: 1,
+    },
     root: {
         flexGrow: 1,
     },
@@ -23,8 +25,48 @@ const useStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(2),
     },
     title: {
-        flexGrow: 1,
+        display: 'none',
+        [theme.breakpoints.up('sm')]: {
+            display: 'block',
+        },
     },
+    search: {
+        position: 'relative',
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: alpha(theme.palette.common.white, 0.15),
+        '&:hover': {
+          backgroundColor: alpha(theme.palette.common.white, 0.25),
+        },
+        marginRight: theme.spacing(2),
+        marginLeft: 0,
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+          marginLeft: theme.spacing(3),
+          width: 'auto',
+        },
+      },
+      searchIcon: {
+        padding: theme.spacing(0, 2),
+        height: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      inputRoot: {
+        color: 'inherit',
+      },
+      inputInput: {
+        padding: theme.spacing(1, 1, 1, 0),
+        // vertical padding + font size from searchIcon
+        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        [theme.breakpoints.up('md')]: {
+          width: '20ch',
+        },
+      },
 }));
 
 const LoggedInPage = (props) => {
@@ -93,7 +135,36 @@ const LoggedInPage = (props) => {
 
     return (
         <ThemeProvider theme={theme}>
-            <AppBar position="static">
+            <div className={classes.grow}>
+                <AppBar position="static">
+                    <Toolbar>
+                    <Typography className={classes.title} variant="h5" noWrap style={{cursor:'pointer'}} onClick={()=>{history.push('/feed');}}>
+                        Social Network
+                    </Typography>
+                    <ProfileSearchBar profiles={profiles}/>
+                    <div className={classes.grow} />
+                    <Typography style={{cursor:'pointer'}} onClick={()=>{history.push('/profile/' + props.profile.profile_id);}}>
+                        {props.profile.user_name}
+                    </Typography>
+                    <IconButton className={classes.menuButton} color="inherit" aria-label="menu" onClick={() => {setMenuOpen(!menuOpen)}} ref={anchorRef} 
+                        aria-controls={false ? 'menu-list-grow' : undefined} aria-haspopup="true">
+                        <Avatar src={props.profile.img_url}/>
+                    </IconButton>
+                    </Toolbar>
+                </AppBar>
+            </div>
+            {props.page}
+            <SettingsMenu open={menuOpen} anchorEl={anchorRef.current} handleClose={handleMenuClose} accColorClick={() => {setMenuOpen(false); setColorDialogOpen(true);}} logout={logout}/>
+            <ColorPicker open={colorDialogOpen} handleClose={() => {setColorDialogOpen(false);}} handleSubmit={handleSubmitColor}/>
+        </ThemeProvider>
+    )
+}
+
+export default LoggedInPage
+
+
+/*
+<AppBar position="static">
                 <Toolbar>
                     <Grid container direction="row" alignItems="center" justifyContent="space-between">
                         <Grid item>
@@ -118,11 +189,4 @@ const LoggedInPage = (props) => {
                     </IconButton>
                 </Toolbar>
             </AppBar>
-            {props.page}
-            <SettingsMenu open={menuOpen} anchorEl={anchorRef.current} handleClose={handleMenuClose} accColorClick={() => {setMenuOpen(false); setColorDialogOpen(true);}} logout={logout}/>
-            <ColorPicker open={colorDialogOpen} handleClose={() => {setColorDialogOpen(false);}} handleSubmit={handleSubmitColor}/>
-        </ThemeProvider>
-    )
-}
-
-export default LoggedInPage
+*/

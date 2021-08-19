@@ -13,8 +13,9 @@ import Divider from '@material-ui/core/Divider';
 import { useState, useEffect } from 'react';
 import Comments from './Comments';
 import { useHistory } from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
     cardHeader: {
         display: 'flex',
         flexDirection: 'row',
@@ -24,7 +25,13 @@ const useStyles = makeStyles((theme) => ({
         paddingLeft: "10px",
         cursor:'pointer',
     }
-}));
+});
+
+/*const theme = createTheme({
+    palette: {
+      type: "dark"
+    }
+  })*/
 
 const PostCard = (props) => {
     const classes = useStyles();
@@ -72,7 +79,8 @@ const PostCard = (props) => {
     const isSinglePostPage = props.viewer_ID === -1;
 
     return (
-        <Card style={{margin: 20,}}>
+        <ThemeProvider>
+            <Card style={{margin: 20,}}>
             <CardContent>
                 <div className={classes.cardHeader}>
                     <Avatar style={{cursor:'pointer'}} src={props.post.user_img} onClick={goToPosterProfile}/>
@@ -108,6 +116,7 @@ const PostCard = (props) => {
             </CardActions>
             <Comments commentList={props.post.comments.commentList} isSinglePostPage={isSinglePostPage}/>
         </Card>
+        </ThemeProvider>
     )
 }
 
