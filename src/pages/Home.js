@@ -4,8 +4,6 @@ import { Redirect } from 'react-router-dom';
 
 const Home = (props) => {
 
-    document.title = "Social Network";
-
     const responseGoogleSuccess = async (response) => {
         let profileIsNew = false;
         let profile = null;

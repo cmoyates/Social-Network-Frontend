@@ -90,6 +90,7 @@ const Feed = (props) => {
                         setCommentDialogOpen(true);
                     }}/>))
                 }
+            <br />
             </Container>
             <SubmitPostDialog comment={false} open={postDialogOpen} handleClose={() => {setPostDialogOpen(false);}} handleSubmit={handleSubmitPost} profile={props.profile}/>
             <SubmitPostDialog comment={true} open={commentDialogOpen} handleClose={() => {setCommentDialogOpen(false);}} handleSubmit={handleSubmitComment} profile={props.profile} post={commentingPost}/>

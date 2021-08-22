@@ -131,6 +131,7 @@ const LoggedInPage = (props) => {
     // Get all of the profiles when the page loads
     useEffect(() => {
         fetchProfiles();
+        //document.body.style.backgroundColor = "green";
     }, [])
 
     return (
@@ -161,32 +162,3 @@ const LoggedInPage = (props) => {
 }
 
 export default LoggedInPage
-
-
-/*
-<AppBar position="static">
-                <Toolbar>
-                    <Grid container direction="row" alignItems="center" justifyContent="space-between">
-                        <Grid item>
-                        <Typography variant="h5" style={{cursor:'pointer'}} onClick={()=>{history.push('/feed');}}>
-                            Social Network
-                        </Typography>
-                        </Grid>
-                        <Grid item>
-                        <div className={classes.title}>
-                            <ProfileSearchBar style={{flexGrow: 1}} profiles={profiles}/>
-                        </div>
-                        </Grid>
-                        <Grid item>
-                        <Typography style={{cursor:'pointer'}} onClick={()=>{history.push('/profile/' + props.profile.profile_id);}}>
-                            {props.profile.user_name}
-                        </Typography>
-                        </Grid>
-                    </Grid>
-                    <IconButton className={classes.menuButton} color="inherit" aria-label="menu" onClick={() => {setMenuOpen(!menuOpen)}} ref={anchorRef} 
-                        aria-controls={menuOpen ? 'menu-list-grow' : undefined} aria-haspopup="true">
-                        <Avatar src={props.profile.img_url}/>
-                    </IconButton>
-                </Toolbar>
-            </AppBar>
-*/

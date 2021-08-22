@@ -1,6 +1,6 @@
 import './App.css';
 import {HashRouter as Router, Route, Switch, Redirect} from "react-router-dom";
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider, makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Home from './pages/Home';
 import Feed from './pages/Feed';
@@ -11,6 +11,13 @@ import SinglePostPage from './pages/SinglePostPage';
 import ProfilePage from './pages/ProfilePage';
 import LoggedInPage from './components/LoggedInPage';
 
+
+/*const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: "#000000"
+  }
+}));*/
+
 function App() {
 
   const [profile, setProfile] = useState([]);
@@ -20,7 +27,7 @@ function App() {
     palette: {
       //type: "dark"
     },
-    background: "#ffffff"
+    backgroundColor: "#000000"
   })
 
   return (

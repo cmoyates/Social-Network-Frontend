@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  height: 100%
+  height: 100%;
 }
 
 .App-header {
@@ -16,4 +16,8 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.Dark {
+  background-color: #282c34;
 }
