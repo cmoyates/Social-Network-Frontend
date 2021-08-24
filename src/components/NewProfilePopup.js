@@ -35,6 +35,7 @@ const NewProfilePopup = (props) => {
             },
             body: JSON.stringify(props.profile)
         });
+        await props.fetchFollowingProfiles;
         setLoading(false);
     }
 

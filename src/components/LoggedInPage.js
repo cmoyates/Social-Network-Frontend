@@ -16,6 +16,7 @@ import SubmitPostDialog from './SubmitPostDialog';
 import DeletePostDialog from './DeletePostDialog';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
+import FollowingDialog from './FollowingDialog';
 
 // Some styles
 const useStyles = makeStyles((theme) => ({
@@ -82,12 +83,14 @@ const LoggedInPage = (props) => {
     const [nppOpen, setNppOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [profiles, setProfiles] = useState([]);
+    const [followingProfiles, setFollowingProfiles] = useState([]);
     const [commentingPost, setCommentingPost] = useState(null);
     const [postDialogOpen, setPostDialogOpen] = useState(false);
     const [commentDialogOpen, setCommentDialogOpen] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [deletingPost, setDeletingPost] = useState(null);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [followingDialogOpen, setFollowingDialogOpen] = useState(false);
 
     const anchorRef = useRef(null);
 
@@ -106,7 +109,14 @@ const LoggedInPage = (props) => {
         const data = await res.json();
         // And save it to the state
         setProfiles(data);
-        console.log(data);
+        //console.log(data);
+    }
+
+    const fetchFollowingProfiles = async () => {
+        const res = await fetch('https://fast-coast-04774.herokuapp.com/profiles/following/' + props.profile.profile_id);
+        const data = await res.json();
+        // And save it to the state
+        setFollowingProfiles(data);
     }
 
     // Close the menu
@@ -131,8 +141,7 @@ const LoggedInPage = (props) => {
         });
         // Get all of the posts (including the new one)
         //await fetchPosts();
-        setLoading(true);
-        setLoading(false);
+        setLoading(!loading);
     };
 
     // Submit a comment
@@ -161,8 +170,7 @@ const LoggedInPage = (props) => {
                 'Accept': 'application/json'
             }
         });
-        setLoading(true);
-        setLoading(false);
+        setLoading(!loading);
         //await fetchPosts();
     }
 
@@ -173,6 +181,11 @@ const LoggedInPage = (props) => {
             setSnackbarOpen(false);
         }
     };
+
+    const showFollowingPopup = () => {
+        setMenuOpen(false);
+        setFollowingDialogOpen(true);
+    }
 
     /*const toggleDarkMode = async () => {
         props.profile.dark_mode = !props.profile.dark_mode;
@@ -193,7 +206,8 @@ const LoggedInPage = (props) => {
     // Get all of the profiles when the page loads
     useEffect(() => {
         fetchProfiles();
-        setNppOpen(true);
+        fetchFollowingProfiles();
+        setNppOpen(false);
     }, [])
 
     return (
@@ -216,12 +230,13 @@ const LoggedInPage = (props) => {
                     </Toolbar>
                 </AppBar>
             </div>
-            {cloneElement(props.page, {setDeletingPost: setDeletingPost, setDeleteDialogOpen: setDeleteDialogOpen, setCommentingPost: setCommentingPost, setCommentDialogOpen: setCommentDialogOpen, setPostDialogOpen: setPostDialogOpen, setSnackbarOpen: setSnackbarOpen, loading: loading, setLoading: setLoading})}
-            <SettingsMenu open={menuOpen} anchorEl={anchorRef.current} handleClose={handleMenuClose} /*darkModeClick={() => {toggleDarkMode(); setMenuOpen(false);}} darkMode={props.darkMode}*/ logout={logout}/>
-            <NewProfilePopup open={nppOpen} handleClose={()=>{setNppOpen(false);}} profiles={profiles} profile={props.profile}/>
+            {cloneElement(props.page, {setDeletingPost: setDeletingPost, setDeleteDialogOpen: setDeleteDialogOpen, setCommentingPost: setCommentingPost, setCommentDialogOpen: setCommentDialogOpen, setPostDialogOpen: setPostDialogOpen, setSnackbarOpen: setSnackbarOpen, loading: loading, setLoading: setLoading, fetchFollowingProfiles: fetchFollowingProfiles})}
+            <SettingsMenu open={menuOpen} anchorEl={anchorRef.current} handleClose={handleMenuClose} /*darkModeClick={() => {toggleDarkMode(); setMenuOpen(false);}} darkMode={props.darkMode}*/ followingClick={showFollowingPopup} logout={logout}/>
+            <NewProfilePopup open={nppOpen} handleClose={()=>{setNppOpen(false);}} profiles={profiles} profile={props.profile} fetchFollowingProfiles={fetchFollowingProfiles}/>
             <SubmitPostDialog comment={false} open={postDialogOpen} handleClose={() => {setPostDialogOpen(false);}} handleSubmit={handleSubmitPost} profile={props.profile}/>
             <SubmitPostDialog comment={true} open={commentDialogOpen} handleClose={() => {setCommentDialogOpen(false);}} handleSubmit={handleSubmitComment} profile={props.profile} post={commentingPost}/>
             <DeletePostDialog post={deletingPost} open={deleteDialogOpen} handleClose={()=>{setDeleteDialogOpen(false);}} handleDelete={handleDeleteAPost}/>
+            <FollowingDialog profile={props.profile} open={followingDialogOpen} handleClose={()=>{setFollowingDialogOpen(false);}} profiles={followingProfiles}/>
             <Snackbar
                 open={snackbarOpen}
                 autoHideDuration={3000}

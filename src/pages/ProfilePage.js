@@ -20,7 +20,7 @@ const ProfilePage = (props) => {
             const data = await res.json();
             document.title = data.user_name
 
-            console.log(data);
+            //console.log(data);
             setPageProfile(data);
             await fetchPageProfilePosts();
         } catch (error) {
@@ -32,7 +32,7 @@ const ProfilePage = (props) => {
         const res = await fetch('https://fast-coast-04774.herokuapp.com/posts/user/' + id);
         const data = await res.json();
 
-        console.log(data);
+        //console.log(data);
         setPosts(data);
     }
 
@@ -52,11 +52,12 @@ const ProfilePage = (props) => {
             },
             body: JSON.stringify(props.profile)
         });
+        await props.fetchFollowingProfiles;
         props.setLoading(false);
     }
 
     useEffect( () => {
-        if (!pageProfile) {
+        if (!pageProfile || pageProfile.profile_id !== parseInt(id)) {
             fetchPageProfile();
         } 
         else {

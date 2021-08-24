@@ -6,8 +6,9 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { GoogleLogout } from 'react-google-login';
-import Brightness7Icon from '@material-ui/icons/Brightness7';
-import Brightness4Icon from '@material-ui/icons/Brightness4';
+//import Brightness7Icon from '@material-ui/icons/Brightness7';
+//import Brightness4Icon from '@material-ui/icons/Brightness4';
+import PeopleIcon from '@material-ui/icons/People';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -40,6 +41,14 @@ const SettingsMenu = (props) => {
                 <Paper className={classes.popupPaper}>
                     <ClickAwayListener onClickAway={props.handleClose}>
                     <MenuList autoFocusItem={props.open} id="menu-list-grow">
+                        <MenuItem onClick={()=>{props.followingClick();}}>
+                            <ListItemText>
+                                Following
+                            </ListItemText>
+                            <ListItemIcon className={classes.listIcon}>
+                                <PeopleIcon/>
+                            </ListItemIcon>
+                        </MenuItem>
                         <GoogleLogout
                             clientId="399415598384-sgkom02f57l549gtnn877013fg004ke5.apps.googleusercontent.com"
                             render={renderProps => (
