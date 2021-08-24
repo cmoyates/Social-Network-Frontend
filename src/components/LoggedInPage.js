@@ -231,7 +231,7 @@ const LoggedInPage = (props) => {
                 </AppBar>
             </div>
             {cloneElement(props.page, {setDeletingPost: setDeletingPost, setDeleteDialogOpen: setDeleteDialogOpen, setCommentingPost: setCommentingPost, setCommentDialogOpen: setCommentDialogOpen, setPostDialogOpen: setPostDialogOpen, setSnackbarOpen: setSnackbarOpen, loading: loading, setLoading: setLoading, fetchFollowingProfiles: fetchFollowingProfiles})}
-            <SettingsMenu open={menuOpen} anchorEl={anchorRef.current} handleClose={handleMenuClose} /*darkModeClick={() => {toggleDarkMode(); setMenuOpen(false);}} darkMode={props.darkMode}*/ followingClick={showFollowingPopup} logout={logout}/>
+            <SettingsMenu open={menuOpen} anchorEl={anchorRef.current} handleClose={handleMenuClose} /*darkModeClick={() => {toggleDarkMode(); setMenuOpen(false);}} darkMode={props.darkMode}*/ followingClick={showFollowingPopup} feedClick={()=>{history.push('/feed/');}} logout={logout}/>
             <NewProfilePopup open={nppOpen} handleClose={()=>{setNppOpen(false);}} profiles={profiles} profile={props.profile} fetchFollowingProfiles={fetchFollowingProfiles}/>
             <SubmitPostDialog comment={false} open={postDialogOpen} handleClose={() => {setPostDialogOpen(false);}} handleSubmit={handleSubmitPost} profile={props.profile}/>
             <SubmitPostDialog comment={true} open={commentDialogOpen} handleClose={() => {setCommentDialogOpen(false);}} handleSubmit={handleSubmitComment} profile={props.profile} post={commentingPost}/>

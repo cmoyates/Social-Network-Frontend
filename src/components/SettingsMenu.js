@@ -10,6 +10,7 @@ import { GoogleLogout } from 'react-google-login';
 //import Brightness4Icon from '@material-ui/icons/Brightness4';
 import PeopleIcon from '@material-ui/icons/People';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import PublicIcon from '@material-ui/icons/Public';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles } from '@material-ui/core/styles';
@@ -41,6 +42,14 @@ const SettingsMenu = (props) => {
                 <Paper className={classes.popupPaper}>
                     <ClickAwayListener onClickAway={props.handleClose}>
                     <MenuList autoFocusItem={props.open} id="menu-list-grow">
+                        <MenuItem onClick={()=>{props.feedClick();}}>
+                            <ListItemText>
+                                Feed
+                            </ListItemText>
+                            <ListItemIcon className={classes.listIcon}>
+                                <PublicIcon/>
+                            </ListItemIcon>
+                        </MenuItem>
                         <MenuItem onClick={()=>{props.followingClick();}}>
                             <ListItemText>
                                 Following
