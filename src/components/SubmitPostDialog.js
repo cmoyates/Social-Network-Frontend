@@ -34,10 +34,14 @@ function SubmitPostDialog(props) {
                         user_img: props.profile.img_url,
                         content: content
                     });
+                    setContent("");
                 }} color="primary">
                     Submit
                 </Button>
-                <Button onClick={props.handleClose} color="primary">
+                <Button onClick={()=>{
+                    props.handleClose();
+                    setContent("");
+                }} color="primary">
                     Cancel
                 </Button>
                 </DialogActions>

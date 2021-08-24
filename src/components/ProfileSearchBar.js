@@ -6,6 +6,9 @@ import { useHistory } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 
+
+// All of this styling comes from this Material UI example:
+
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -48,7 +51,6 @@ const useStyles = makeStyles((theme) => ({
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
     width: '100%',
@@ -78,13 +80,13 @@ const ProfileSearchBar = (props) => {
     const [open, setOpen] = useState(false);
 
     const handleOpen = () => {
-        if (inputValue.length > 2) {
+        if (inputValue.length > 0) {
             setOpen(true);
         }
     };
     const handleInputChange = (event, newInputValue) => {
         setInputValue(newInputValue);
-        setOpen(newInputValue.length > 2);
+        setOpen(newInputValue.length > 0);
     };
 
     return (

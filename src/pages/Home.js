@@ -50,6 +50,7 @@ const Home = (props) => {
                     body: JSON.stringify(profile)
                 });
                 console.log("Profile Created!");
+                props.setFirstTime(true);
             } catch (error) {
                 console.log(error);
                 return;

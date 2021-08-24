@@ -9,9 +9,9 @@ import Avatar from '@material-ui/core/Avatar';
 import { createTheme, makeStyles, ThemeProvider, alpha } from '@material-ui/core/styles';
 import {useState, useEffect, useRef} from 'react';
 import SettingsMenu from './SettingsMenu';
-import ColorPicker from './ColorPicker';
 import ProfileSearchBar from '../components/ProfileSearchBar.js';
 import { useHistory } from 'react-router-dom';
+import NewProfilePopup from './NewProfilePopup';
 
 // Some styles
 const useStyles = makeStyles((theme) => ({
@@ -75,8 +75,8 @@ const LoggedInPage = (props) => {
 
     // A bunch of state stuff
     const [menuOpen, setMenuOpen] = useState(false);
-    const [colorDialogOpen, setColorDialogOpen] = useState(false);
-    const [primaryColor, setPrimaryColor] = useState('#3f50b5');
+    const [nppOpen, setNppOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [profiles, setProfiles] = useState([]);
 
     const anchorRef = useRef(null);
@@ -96,11 +96,7 @@ const LoggedInPage = (props) => {
         const data = await res.json();
         // And save it to the state
         setProfiles(data);
-    }
-
-    const handleSubmitColor = async (color) => {
-        setColorDialogOpen(false);
-        setPrimaryColor(color);
+        console.log(data);
     }
 
     // Close the menu
@@ -110,32 +106,30 @@ const LoggedInPage = (props) => {
         }
     };
 
-    // Theme colors
-    var theme = createTheme({
-        palette: {
-            primary: {
-                light: '#757ce8',
-                main: primaryColor,
-                dark: '#002884',
-                contrastText: '#fff',
+    /*const toggleDarkMode = async () => {
+        props.profile.dark_mode = !props.profile.dark_mode;
+        setLoading(true);
+        await fetch("https://fast-coast-04774.herokuapp.com/profiles/" + props.profile.profile_id, {
+            method: "PUT",
+            headers : { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
-            secondary: {
-                light: '#ff7961',
-                main: '#f44336',
-                dark: '#ba000d',
-                contrastText: '#000',
-            },
-        },
-    });
+            body: JSON.stringify(props.profile)
+        });
+        setLoading(false);
+        props.setDarkMode(props.profile.dark_mode);
+        console.log(props.profile.dark_mode)
+    }*/
 
     // Get all of the profiles when the page loads
     useEffect(() => {
         fetchProfiles();
-        //document.body.style.backgroundColor = "green";
+        setNppOpen(true);
     }, [])
 
     return (
-        <ThemeProvider theme={theme}>
+        <div>
             <div className={classes.grow}>
                 <AppBar position="static">
                     <Toolbar>
@@ -155,9 +149,9 @@ const LoggedInPage = (props) => {
                 </AppBar>
             </div>
             {props.page}
-            <SettingsMenu open={menuOpen} anchorEl={anchorRef.current} handleClose={handleMenuClose} accColorClick={() => {setMenuOpen(false); setColorDialogOpen(true);}} logout={logout}/>
-            <ColorPicker open={colorDialogOpen} handleClose={() => {setColorDialogOpen(false);}} handleSubmit={handleSubmitColor}/>
-        </ThemeProvider>
+            <SettingsMenu open={menuOpen} anchorEl={anchorRef.current} handleClose={handleMenuClose} /*darkModeClick={() => {toggleDarkMode(); setMenuOpen(false);}} darkMode={props.darkMode}*/ logout={logout}/>
+            <NewProfilePopup open={nppOpen} handleClose={()=>{setNppOpen(false);}} profiles={profiles} profile={props.profile}/>
+        </div>
     )
 }
 
