@@ -90,12 +90,10 @@ const PostCard = (props) => {
 
     return (
         <div>
-            <Card className={classes.postCard} onMouseOver={()=>{if (props.viewer_ID === props.post.user_id && !showDeleteButton) {
+            <Card className={classes.postCard} onMouseOver={()=>{if (!showDeleteButton && props.viewer_ID === props.post.user_id) {
                 setShowDeleteButton(true);
-                console.log("You own this");
-            }}} onMouseLeave={()=>{if (props.viewer_ID === props.post.user_id && showDeleteButton) {
+            }}} onMouseLeave={()=>{if (showDeleteButton && props.viewer_ID === props.post.user_id) {
                 setShowDeleteButton(false);
-                console.log("Leaving");
             }}}>
                 <CardContent>
                     <div className={classes.cardHeader}>
@@ -103,7 +101,7 @@ const PostCard = (props) => {
                         <h3 className={classes.nameText} onClick={goToPosterProfile}>{props.post.user_name}</h3>
                         <div className={classes.grow} />
                         {(!showDeleteButton) ? null : 
-                            <IconButton className={classes.deleteButton}>
+                            <IconButton className={classes.deleteButton} onClick={()=>{props.deleteCallback();}}>
                                 <CloseIcon />
                             </IconButton>
                         }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { cloneElement } from 'react'
 //import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -12,6 +12,10 @@ import SettingsMenu from './SettingsMenu';
 import ProfileSearchBar from '../components/ProfileSearchBar.js';
 import { useHistory } from 'react-router-dom';
 import NewProfilePopup from './NewProfilePopup';
+import SubmitPostDialog from './SubmitPostDialog';
+import DeletePostDialog from './DeletePostDialog';
+import Snackbar from '@material-ui/core/Snackbar';
+import CloseIcon from '@material-ui/icons/Close';
 
 // Some styles
 const useStyles = makeStyles((theme) => ({
@@ -78,6 +82,12 @@ const LoggedInPage = (props) => {
     const [nppOpen, setNppOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [profiles, setProfiles] = useState([]);
+    const [commentingPost, setCommentingPost] = useState(null);
+    const [postDialogOpen, setPostDialogOpen] = useState(false);
+    const [commentDialogOpen, setCommentDialogOpen] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [deletingPost, setDeletingPost] = useState(null);
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
     const anchorRef = useRef(null);
 
@@ -103,6 +113,64 @@ const LoggedInPage = (props) => {
     const handleMenuClose = (event) => {
         if (!(anchorRef.current && anchorRef.current.contains(event.target))) {
             setMenuOpen(false);
+        }
+    };
+
+    // Submit a post
+    const handleSubmitPost = async (post) => {
+        // Close the post dialog
+        setPostDialogOpen(false);
+        // Add the post to the database
+        await fetch("https://fast-coast-04774.herokuapp.com/posts", {
+            method: "POST",
+            headers : { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(post)
+        });
+        // Get all of the posts (including the new one)
+        //await fetchPosts();
+        setLoading(true);
+        setLoading(false);
+    };
+
+    // Submit a comment
+    const handleSubmitComment = async (comment) => {
+        // Close the comment dialog
+        setCommentDialogOpen(false);
+        // Add the comment object to the list of comments for the post you're commenting on
+        commentingPost.comments.commentList.push(comment);
+        // Update that post on the database
+        await fetch("https://fast-coast-04774.herokuapp.com/posts/" + commentingPost.post_id, {
+            method: "PUT",
+            headers : { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(commentingPost)
+        });
+    }
+
+    const handleDeleteAPost = async () => {
+        
+        await fetch("https://fast-coast-04774.herokuapp.com/posts/" + deletingPost.post_id, {
+            method: "DELETE",
+            headers : { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        });
+        setLoading(true);
+        setLoading(false);
+        //await fetchPosts();
+    }
+
+    // Close the snackbar
+    const handleSnackbarClose = (event, reason) => {
+        // If the reason is not clicking away
+        if (reason !== 'clickaway') {
+            setSnackbarOpen(false);
         }
     };
 
@@ -148,9 +216,23 @@ const LoggedInPage = (props) => {
                     </Toolbar>
                 </AppBar>
             </div>
-            {props.page}
+            {cloneElement(props.page, {setDeletingPost: setDeletingPost, setDeleteDialogOpen: setDeleteDialogOpen, setCommentingPost: setCommentingPost, setCommentDialogOpen: setCommentDialogOpen, setPostDialogOpen: setPostDialogOpen, setSnackbarOpen: setSnackbarOpen, loading: loading, setLoading: setLoading})}
             <SettingsMenu open={menuOpen} anchorEl={anchorRef.current} handleClose={handleMenuClose} /*darkModeClick={() => {toggleDarkMode(); setMenuOpen(false);}} darkMode={props.darkMode}*/ logout={logout}/>
             <NewProfilePopup open={nppOpen} handleClose={()=>{setNppOpen(false);}} profiles={profiles} profile={props.profile}/>
+            <SubmitPostDialog comment={false} open={postDialogOpen} handleClose={() => {setPostDialogOpen(false);}} handleSubmit={handleSubmitPost} profile={props.profile}/>
+            <SubmitPostDialog comment={true} open={commentDialogOpen} handleClose={() => {setCommentDialogOpen(false);}} handleSubmit={handleSubmitComment} profile={props.profile} post={commentingPost}/>
+            <DeletePostDialog post={deletingPost} open={deleteDialogOpen} handleClose={()=>{setDeleteDialogOpen(false);}} handleDelete={handleDeleteAPost}/>
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={3000}
+                onClose={handleSnackbarClose}
+                message="Link copied to clipboard"
+                action={
+                    <IconButton size="small" aria-label="close" color="inherit" onClick={handleSnackbarClose}>
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
+                }
+            />
         </div>
     )
 }
