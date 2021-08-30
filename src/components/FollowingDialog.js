@@ -21,7 +21,7 @@ const FollowingDialog = (props) => {
 
     return (
         <Dialog open={props.open} onClose={props.handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">{(notFollowingAnyone) ? "You're not following anyone!" : "These are the people you follow:"}</DialogTitle>
+            <DialogTitle id="form-dialog-title">{(notFollowingAnyone) ? "You're not following anyone!" : props.title}</DialogTitle>
             <DialogContent>
                 {(notFollowingAnyone) ? <div>
                     <Typography align="center">Try typing some names into the searchbar!</Typography>
@@ -29,8 +29,8 @@ const FollowingDialog = (props) => {
                 </div> : 
                 (<Paper style={{maxHeight: 300, overflow: 'auto'}}>
                     <List>
-                        {props.profiles.map((item)=>{return (item.profile_id === props.profile.profile_id) ? null : 
-                            <ListItem button onClick={()=>{props.handleClose(); history.push('/profile/' + item.profile_id);}}>
+                        {props.profiles.map((item, index)=>{return (item.profile_id === props.profile.profile_id) ? null : 
+                            <ListItem key={index} button onClick={()=>{props.handleClose(); props.clickCallback(item);}}>
                                 <ListItemAvatar>
                                     <Avatar src={item.img_url}/>
                                 </ListItemAvatar>

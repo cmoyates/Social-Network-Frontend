@@ -91,6 +91,9 @@ const LoggedInPage = (props) => {
     const [deletingPost, setDeletingPost] = useState(null);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [followingDialogOpen, setFollowingDialogOpen] = useState(false);
+    const [newChatDialogOpen, setNewChatDialogOpen] = useState(false);
+    const [currentChat, setCurrentChat] = useState(null);
+    const [chats, setChats] = useState([]);
 
     const anchorRef = useRef(null);
 
@@ -187,6 +190,59 @@ const LoggedInPage = (props) => {
         setFollowingDialogOpen(true);
     }
 
+    const startChat = async (otherProfile) => {
+
+        const participants = [otherProfile, props.profile].sort((a, b)=>(a.profile_id-b.profile_id));
+        
+        const chat = {
+            room_name: `${participants[0].profile_id}-${participants[1].profile_id}`,
+            participants: participants,
+        }
+
+        const res = await fetch("https://fast-coast-04774.herokuapp.com/chats/room/" + chat.room_name, {
+            method: "GET",
+            headers : { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        });
+        
+        let data;
+        try {
+            data = await res.json();
+            console.log("You already have a chat with this person");
+        } catch (error) {
+            const res = await fetch("https://fast-coast-04774.herokuapp.com/chats", {
+                method: "POST",
+                headers : { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(chat)
+            });
+            data = await res.json();
+            await fetchChats();
+        }
+        setCurrentChat(data);
+        console.log("done")
+    }
+
+    const fetchChats = async () => {
+        const res = await fetch('https://fast-coast-04774.herokuapp.com/chats/profile/' + props.profile.profile_id);
+        const data = await res.json();
+        // Store the posts in the state
+        setChats(data);
+
+        if (data.length !== 0) {
+            setCurrentChat(data[0]);
+        }
+        else {
+            console.log("No rooms");
+        }
+
+        return data;
+    }
+
     /*const toggleDarkMode = async () => {
         props.profile.dark_mode = !props.profile.dark_mode;
         setLoading(true);
@@ -211,8 +267,8 @@ const LoggedInPage = (props) => {
     }, [])
 
     return (
-        <div>
-            <div className={classes.grow}>
+        <div style={{height: "100vh", display: "flex", flexDirection: "column"}}>
+            <div>
                 <AppBar position="static">
                     <Toolbar>
                     <Typography className={classes.title} variant="h5" noWrap style={{cursor:'pointer'}} onClick={()=>{history.push('/feed');}}>
@@ -230,13 +286,14 @@ const LoggedInPage = (props) => {
                     </Toolbar>
                 </AppBar>
             </div>
-            {cloneElement(props.page, {setDeletingPost: setDeletingPost, setDeleteDialogOpen: setDeleteDialogOpen, setCommentingPost: setCommentingPost, setCommentDialogOpen: setCommentDialogOpen, setPostDialogOpen: setPostDialogOpen, setSnackbarOpen: setSnackbarOpen, loading: loading, setLoading: setLoading, fetchFollowingProfiles: fetchFollowingProfiles})}
-            <SettingsMenu open={menuOpen} anchorEl={anchorRef.current} handleClose={handleMenuClose} /*darkModeClick={() => {toggleDarkMode(); setMenuOpen(false);}} darkMode={props.darkMode}*/ followingClick={showFollowingPopup} feedClick={()=>{history.push('/feed/');}} logout={logout}/>
+            {cloneElement(props.page, {setDeletingPost: setDeletingPost, setDeleteDialogOpen: setDeleteDialogOpen, setCommentingPost: setCommentingPost, setCommentDialogOpen: setCommentDialogOpen, setPostDialogOpen: setPostDialogOpen, setSnackbarOpen: setSnackbarOpen, setNewChatDialogOpen: setNewChatDialogOpen, currentChat: currentChat, setCurrentChat: setCurrentChat, chats: chats, fetchChats: fetchChats, loading: loading, setLoading: setLoading, fetchFollowingProfiles: fetchFollowingProfiles})}
+            <SettingsMenu open={menuOpen} anchorEl={anchorRef.current} handleClose={handleMenuClose} /*darkModeClick={() => {toggleDarkMode(); setMenuOpen(false);}} darkMode={props.darkMode}*/ followingClick={showFollowingPopup} feedClick={()=>{history.push('/feed/');}} messagesClick={()=>{history.push('/messages/');}} logout={logout}/>
             <NewProfilePopup open={nppOpen} handleClose={()=>{setNppOpen(false);}} profiles={profiles} profile={props.profile} fetchFollowingProfiles={fetchFollowingProfiles}/>
             <SubmitPostDialog comment={false} open={postDialogOpen} handleClose={() => {setPostDialogOpen(false);}} handleSubmit={handleSubmitPost} profile={props.profile}/>
             <SubmitPostDialog comment={true} open={commentDialogOpen} handleClose={() => {setCommentDialogOpen(false);}} handleSubmit={handleSubmitComment} profile={props.profile} post={commentingPost}/>
             <DeletePostDialog post={deletingPost} open={deleteDialogOpen} handleClose={()=>{setDeleteDialogOpen(false);}} handleDelete={handleDeleteAPost}/>
-            <FollowingDialog profile={props.profile} open={followingDialogOpen} handleClose={()=>{setFollowingDialogOpen(false);}} profiles={followingProfiles}/>
+            <FollowingDialog title="These are the people you follow:" profile={props.profile} open={followingDialogOpen} handleClose={()=>{setFollowingDialogOpen(false);}} profiles={followingProfiles} clickCallback={(item)=>{history.push('/profile/' + item.profile_id);}}/>
+            <FollowingDialog title="Pick someone to chat with:" profile={props.profile} open={newChatDialogOpen} handleClose={()=>{setNewChatDialogOpen(false);}} profiles={followingProfiles} clickCallback={(item)=>{startChat(item);}}/>
             <Snackbar
                 open={snackbarOpen}
                 autoHideDuration={3000}

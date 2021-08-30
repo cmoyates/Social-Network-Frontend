@@ -8,6 +8,7 @@ import MenuList from '@material-ui/core/MenuList';
 import { GoogleLogout } from 'react-google-login';
 //import Brightness7Icon from '@material-ui/icons/Brightness7';
 //import Brightness4Icon from '@material-ui/icons/Brightness4';
+import ChatIcon from '@material-ui/icons/Chat';
 import PeopleIcon from '@material-ui/icons/People';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PublicIcon from '@material-ui/icons/Public';
@@ -48,6 +49,14 @@ const SettingsMenu = (props) => {
                             </ListItemText>
                             <ListItemIcon className={classes.listIcon}>
                                 <PublicIcon/>
+                            </ListItemIcon>
+                        </MenuItem>
+                        <MenuItem onClick={()=>{props.messagesClick();}}>
+                            <ListItemText>
+                                Messages
+                            </ListItemText>
+                            <ListItemIcon className={classes.listIcon}>
+                                <ChatIcon/>
                             </ListItemIcon>
                         </MenuItem>
                         <MenuItem onClick={()=>{props.followingClick();}}>

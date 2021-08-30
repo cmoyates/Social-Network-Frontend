@@ -46,8 +46,8 @@ const NewProfilePopup = (props) => {
             <Typography align="center">Here are some people to follow</Typography>
                 <Paper style={{maxHeight: 200, overflow: 'auto'}}>
                     <List>
-                        {props.profiles.map((item)=>{return (item.profile_id === props.profile.profile_id) ? null : 
-                            <ListItem style={{minWidth: "300px"}}>
+                        {props.profiles.map((item, index)=>{return (item.profile_id === props.profile.profile_id) ? null : 
+                            <ListItem key={index} style={{minWidth: "300px"}}>
                                 <ListItemAvatar>
                                     <Avatar src={item.img_url}/>
                                 </ListItemAvatar>
