@@ -50,6 +50,7 @@ const Messages = (props) => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [otherPersonName, setOtherPersonName]  = useState("");
+    const [newChatFlag, setNewChatFlag] = useState(0);
 
     const ENDPOINT = "https://fast-coast-04774.herokuapp.com";
 
@@ -72,6 +73,16 @@ const Messages = (props) => {
             socket.emit('join', {name, profile_id, room}, (error) => {
                 if (error) alert(error);
                 console.log(`Joined ${room}`)
+                if (newChatFlag) {
+                    socket.emit('newChat', newChatFlag)
+                    setNewChatFlag(0)
+                }
+
+                socket.on('chatHasBeenMade', () => {
+                    console.log("Message recieved")
+                    props.fetchChats();
+                })
+
                 //console.log(props.currentChat.messages)
                 //setMessages(props.currentChat.messages.messageList)
             });
@@ -101,6 +112,7 @@ const Messages = (props) => {
 
     useEffect(() => {
         setMessages([]);
+        //doesItNeedToBeInAFunction();
         if (props.currentChat) {
             setMessages(props.currentChat.messages.messageList);
         }
@@ -114,6 +126,16 @@ const Messages = (props) => {
         })
     })*/
     
+    useEffect(() => {
+        console.log(socket)
+        if (props.newChat) {
+            console.log("Message sent")
+            //props.newChat.participants.find((item)=>(item.profile_id !== props.profile.profile_id)).profile_id
+            //doesItNeedToBeInAFunction();
+            setNewChatFlag(props.newChat.participants.find((item)=>(item.profile_id !== props.profile.profile_id)).profile_id);
+        }
+    }, [props.newChat])
+
     const sendMessage = (event) => {
         
         event.preventDefault();

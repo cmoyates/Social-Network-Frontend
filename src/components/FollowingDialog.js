@@ -11,11 +11,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
-import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 
 const FollowingDialog = (props) => {
-    let history = useHistory();
 
     const notFollowingAnyone = props.profiles.length === 1;
 

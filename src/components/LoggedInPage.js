@@ -94,6 +94,7 @@ const LoggedInPage = (props) => {
     const [newChatDialogOpen, setNewChatDialogOpen] = useState(false);
     const [currentChat, setCurrentChat] = useState(null);
     const [chats, setChats] = useState([]);
+    const [newChat, setNewChat] = useState(null);
 
     const anchorRef = useRef(null);
 
@@ -222,9 +223,10 @@ const LoggedInPage = (props) => {
             });
             data = await res.json();
             await fetchChats();
+            setNewChat(data);
+            setNewChat(null);
         }
         setCurrentChat(data);
-        console.log("done")
     }
 
     const fetchChats = async () => {
@@ -286,7 +288,7 @@ const LoggedInPage = (props) => {
                     </Toolbar>
                 </AppBar>
             </div>
-            {cloneElement(props.page, {setDeletingPost: setDeletingPost, setDeleteDialogOpen: setDeleteDialogOpen, setCommentingPost: setCommentingPost, setCommentDialogOpen: setCommentDialogOpen, setPostDialogOpen: setPostDialogOpen, setSnackbarOpen: setSnackbarOpen, setNewChatDialogOpen: setNewChatDialogOpen, currentChat: currentChat, setCurrentChat: setCurrentChat, chats: chats, fetchChats: fetchChats, loading: loading, setLoading: setLoading, fetchFollowingProfiles: fetchFollowingProfiles})}
+            {cloneElement(props.page, {setDeletingPost: setDeletingPost, setDeleteDialogOpen: setDeleteDialogOpen, setCommentingPost: setCommentingPost, setCommentDialogOpen: setCommentDialogOpen, setPostDialogOpen: setPostDialogOpen, setSnackbarOpen: setSnackbarOpen, setNewChatDialogOpen: setNewChatDialogOpen, currentChat: currentChat, setCurrentChat: setCurrentChat, chats: chats, fetchChats: fetchChats, newChat: newChat, loading: loading, setLoading: setLoading, fetchFollowingProfiles: fetchFollowingProfiles})}
             <SettingsMenu open={menuOpen} anchorEl={anchorRef.current} handleClose={handleMenuClose} /*darkModeClick={() => {toggleDarkMode(); setMenuOpen(false);}} darkMode={props.darkMode}*/ followingClick={showFollowingPopup} feedClick={()=>{history.push('/feed/');}} messagesClick={()=>{history.push('/messages/');}} logout={logout}/>
             <NewProfilePopup open={nppOpen} handleClose={()=>{setNppOpen(false);}} profiles={profiles} profile={props.profile} fetchFollowingProfiles={fetchFollowingProfiles}/>
             <SubmitPostDialog comment={false} open={postDialogOpen} handleClose={() => {setPostDialogOpen(false);}} handleSubmit={handleSubmitPost} profile={props.profile}/>
