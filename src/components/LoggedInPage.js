@@ -17,7 +17,7 @@ import DeletePostDialog from './DeletePostDialog';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 import FollowingDialog from './FollowingDialog';
-
+import Drawer from '@material-ui/core/Drawer';
 // Some styles
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -95,6 +95,7 @@ const LoggedInPage = (props) => {
     const [currentChat, setCurrentChat] = useState(null);
     const [chats, setChats] = useState([]);
     const [newChat, setNewChat] = useState(null);
+    const [drawerOpen, setDrawerOpen] = useState(false);
 
     const anchorRef = useRef(null);
 
@@ -307,6 +308,9 @@ const LoggedInPage = (props) => {
                     </IconButton>
                 }
             />
+            {/*<Drawer anchor="left" open={false} onClose={setDrawerOpen(false)}>
+                test
+            </Drawer>*/}
         </div>
     )
 }
